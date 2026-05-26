@@ -374,14 +374,14 @@ html[data-theme="dark"] .tool-creates{background:var(--pv-soft);border-color:var
   <div class="tbl">
     <table>
       <thead><tr>
-        <th>Policy Name</th><th>Severity</th><th>App Scope</th><th>Governance Actions</th><th>Status</th><th>Matches (30d)</th>
+        <th>Policy Name</th><th>Severity</th><th>App Scope</th><th>Governance Actions</th><th>Status</th><th>Purview Coverage</th><th>Matches (30d)</th>
       </tr></thead>
       <tbody id="mdaRows">
-        <tr><td><strong>Customer PII Protection</strong></td><td>🔴 High</td><td>SharePoint, OneDrive, Box, Dropbox</td><td>Block access · Notify admin</td><td><span class="badge b-act">✓ Active</span></td><td>142</td></tr>
-        <tr><td><strong>Financial Records Detection</strong></td><td>🔴 High</td><td>SharePoint, OneDrive, Google Workspace</td><td>Apply sensitivity label · Quarantine</td><td><span class="badge b-act">✓ Active</span></td><td>67</td></tr>
-        <tr><td><strong>IP Leak Prevention</strong></td><td>🟡 Medium</td><td>OneDrive, Dropbox, Salesforce</td><td>Block access · Remove shared link</td><td><span class="badge b-act">✓ Active</span></td><td>29</td></tr>
-        <tr><td><strong>GDPR Compliance Scan</strong></td><td>🟠 Medium</td><td>SharePoint, Box, Google Workspace</td><td>Trash file · Notify user</td><td><span class="badge b-act">✓ Active</span></td><td>88</td></tr>
-        <tr><td><strong>Legacy Audit Policy</strong></td><td>🔵 Low</td><td>SharePoint, OneDrive</td><td>Alert only</td><td><span class="badge b-act">✓ Active</span></td><td>4</td></tr>
+        <tr><td><strong>Customer PII Protection</strong></td><td>🔴 High</td><td>SharePoint, OneDrive, Box, Dropbox</td><td>Block access · Notify admin</td><td><span class="badge b-act">✓ Active</span></td><td><div style="display:flex;flex-direction:column;gap:3px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-3p">3P DLP</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div></div></td><td>142</td></tr>
+        <tr><td><strong>Financial Records Detection</strong></td><td>🔴 High</td><td>SharePoint, OneDrive, Google Workspace</td><td>Apply sensitivity label · Quarantine</td><td><span class="badge b-act">✓ Active</span></td><td><div style="display:flex;flex-direction:column;gap:3px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-warn);">⚠️ Partial</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-al">Auto-label</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div></div></td><td>67</td></tr>
+        <tr><td><strong>IP Leak Prevention</strong></td><td>🟡 Medium</td><td>OneDrive, Dropbox, Salesforce</td><td>Block access · Remove shared link</td><td><span class="badge b-act">✓ Active</span></td><td><div style="display:flex;flex-direction:column;gap:3px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-3p">3P DLP</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div></div></td><td>29</td></tr>
+        <tr><td><strong>GDPR Compliance Scan</strong></td><td>🟠 Medium</td><td>SharePoint, Box, Google Workspace</td><td>Trash file · Notify user</td><td><span class="badge b-act">✓ Active</span></td><td><div style="display:flex;flex-direction:column;gap:3px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-warn);">⚠️ Partial</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-3p">3P DLP</span><span style="font-size:11px;color:var(--cp-warn);">⚠️ Partial</span></div></div></td><td>88</td></tr>
+        <tr><td><strong>Legacy Audit Policy</strong></td><td>🔵 Low</td><td>SharePoint, OneDrive</td><td>Alert only</td><td><span class="badge b-act">✓ Active</span></td><td><span style="font-size:11px;color:var(--cp-err);">❌ No Purview equivalent</span></td><td>4</td></tr>
       </tbody>
     </table>
   </div>
@@ -436,14 +436,27 @@ html[data-theme="dark"] .tool-creates{background:var(--pv-soft);border-color:var
         <div class="gate-desc" id="gd3">Checking Compliance Admin / Information Protection Admin role in Purview…</div>
       </div>
     </div>
+    <div class="gate-card" id="gc4">
+      <div class="gate-ico pulse" id="gi4">⏳</div>
+      <div>
+        <div class="gate-title">Purview Enterprise Account</div>
+        <div class="gate-desc" id="gd4">Checking for Purview Enterprise account setup…</div>
+      </div>
+    </div>
+    <div class="gate-card" id="gc5">
+      <div class="gate-ico pulse" id="gi5">⏳</div>
+      <div>
+        <div class="gate-title">Azure Subscription (PAYG)</div>
+        <div class="gate-desc" id="gd5">Checking Azure subscription linked to Purview account for 3P PAYG billing…</div>
+      </div>
+    </div>
   </div>
   <div id="gateResult" style="display:none;max-width:560px;margin:16px auto 0;">
     <div class="banner bn-ok">
       <span class="b-ico">✅</span>
       <div class="b-body">
-        <div class="b-title">All checks passed</div>
-        Purview IP license verified · Security Admin (MDA) + Compliance Admin (Purview) confirmed for admin@contoso.com.<br>
-        <strong>Pre-requisite checks for each policy type will happen inside the Purview Migration Wizard.</strong>
+        <div class="b-title">All 5 checks passed</div>
+        Purview IP license verified · Security Admin (MDA) + Compliance Admin (Purview) confirmed · Purview Enterprise account active · Azure subscription linked (Contoso EA) for 3P PAYG billing — <strong>admin@contoso.com</strong>
       </div>
     </div>
     <div class="act-row" style="justify-content:center;">
@@ -482,14 +495,14 @@ html[data-theme="dark"] .tool-creates{background:var(--pv-soft);border-color:var
           <td><strong>Customer PII Protection</strong></td>
           <td style="font-size:12px;">SPO · ODB · Box · Dropbox</td>
           <td><span class="badge b-can">✅ Can Migrate</span></td>
-          <td><div class="pills"><span class="pill p-spo">SPO DLP</span><span class="pill p-3p">3P DLP</span></div></td>
+          <td><div style="display:flex;flex-direction:column;gap:4px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-3p">3P DLP</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div></div></td>
           <td style="font-size:12px;color:var(--cp-ok);">All conditions fully supported</td>
         </tr>
         <tr>
           <td><strong>Financial Records Detection</strong></td>
           <td style="font-size:12px;">SPO · ODB · GWS</td>
           <td><span class="badge b-part">⚠️ Partial Migrate</span></td>
-          <td><div class="pills"><span class="pill p-spo">SPO DLP</span><span class="pill p-al">Auto-labeling</span></div></td>
+          <td><div style="display:flex;flex-direction:column;gap:4px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-warn);">⚠️ Partial</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-al">Auto-label</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div></div></td>
           <td>
             <ul class="gap-list">
               <li><span class="rc" title="ContentIsNotLabeled not supported for SPO/ODB in Purview DLP. No creatable workaround.">GAP-001</span> Unlabeled file detection (SPO/ODB) — no Purview DLP equivalent</li>
@@ -500,14 +513,14 @@ html[data-theme="dark"] .tool-creates{background:var(--pv-soft);border-color:var
           <td><strong>IP Leak Prevention</strong></td>
           <td style="font-size:12px;">ODB · Dropbox · Salesforce</td>
           <td><span class="badge b-can">✅ Can Migrate</span></td>
-          <td><div class="pills"><span class="pill p-spo">SPO DLP</span><span class="pill p-3p">3P DLP</span></div></td>
+          <td><div style="display:flex;flex-direction:column;gap:4px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-3p">3P DLP</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div></div></td>
           <td style="font-size:12px;color:var(--cp-ok);">All conditions fully supported</td>
         </tr>
         <tr>
           <td><strong>GDPR Compliance Scan</strong></td>
           <td style="font-size:12px;">SPO · Box · GWS</td>
           <td><span class="badge b-part">⚠️ Partial Migrate</span></td>
-          <td><div class="pills"><span class="pill p-spo">SPO DLP</span><span class="pill p-3p">3P DLP</span></div></td>
+          <td><div style="display:flex;flex-direction:column;gap:4px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-warn);">⚠️ Partial</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-3p">3P DLP</span><span style="font-size:11px;color:var(--cp-warn);">⚠️ Partial</span></div></div></td>
           <td>
             <ul class="gap-list">
               <li><span class="rc" title="MIME type maps to extension list — some MIME types may not have an exact extension match">GAP-002</span> MIME type filter → extension mapping (info loss possible)</li>
@@ -731,12 +744,11 @@ html[data-theme="dark"] .tool-creates{background:var(--pv-soft);border-color:var
 
         <div class="pq">
           <span class="pq-ico">✅</span>
-          <div class="pq-lbl">Azure subscription linked (required for PAYG billing)
-            <small>A linked Azure subscription is required before creating 3P DLP policies</small>
+          <div class="pq-lbl">Azure subscription &amp; Purview Enterprise account
+            <small>Verified at entry gate — Contoso EA subscription linked, Purview Enterprise account active</small>
           </div>
           <div class="pq-right">
-            <span class="pq-ok">✓ Contoso EA</span>
-            <a class="docs-link" onclick="alert('Opens: learn.microsoft.com/purview/billing-in-purview')">📄 Set up PAYG billing →</a>
+            <span class="pq-ok">✓ Verified at gate</span>
           </div>
         </div>
         <div class="pq">
@@ -852,7 +864,7 @@ html[data-theme="dark"] .tool-creates{background:var(--pv-soft);border-color:var
       <div class="prereq-card-col">
         <div class="prereq-col-title">3P &nbsp;&middot;&nbsp; App DLP</div>
         <div class="prereq-row prereq-ok">&#10003; 3P connectors active in MDA (Box, Dropbox, Google Workspace, Salesforce) &mdash; <a class="docs-link" onclick="alert('learn.microsoft.com/defender-cloud-apps/enable-instant-visibility-protection-and-governance-actions-for-your-apps')">how to enable &#8594;</a></div>
-        <div class="prereq-row prereq-ok">&#10003; PAYG protected-asset meter configured &mdash; <a class="docs-link" onclick="alert('learn.microsoft.com/purview/dlp-microsoft-defender-integration')">billing docs &#8594;</a></div>
+        <div class="prereq-row prereq-ok">&#10003; Azure subscription &amp; Purview Enterprise account verified at entry gate &mdash; <a class="docs-link" onclick="alert('learn.microsoft.com/purview/billing-in-purview')">billing docs &#8594;</a></div>
       </div>
     </div>
   </div>
@@ -1121,7 +1133,13 @@ function runGates(){
       passGate('gc2','gi2','gd2','Security Admin role confirmed (admin@contoso.com)');
       setTimeout(()=>{
         passGate('gc3','gi3','gd3','Compliance Admin role confirmed (admin@contoso.com)');
-        setTimeout(()=>{ document.getElementById('gateResult').style.display='block'; }, 350);
+        setTimeout(()=>{
+          passGate('gc4','gi4','gd4','Purview Enterprise account detected — Contoso Enterprise');
+          setTimeout(()=>{
+            passGate('gc5','gi5','gd5','Azure subscription linked — Contoso EA · Required for 3P PAYG billing');
+            setTimeout(()=>{ document.getElementById('gateResult').style.display='block'; }, 350);
+          }, 750);
+        }, 750);
       }, 750);
     }, 800);
   }, 1000);
