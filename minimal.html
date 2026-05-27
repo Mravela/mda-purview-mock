@@ -153,25 +153,29 @@
               <tr>
                 <td><input type="checkbox" id="chkFin" checked onclick="updateBtn()" style="accent-color:#0f6cbd;width:16px;height:16px;cursor:pointer"></td>
                 <td class="pol-name"><strong>Financial Records Detection</strong><div class="pol-note">SharePoint, OneDrive</div></td>
-                <td style="font-size:12px;color:#555">1 policy</td>
+                <td style="font-size:12px;color:#555">Financial Records Detection <span style="color:#aaa">·</span> SPO</td>
                 <td><span class="status-chip chip-full">✅ Full</span></td>
               </tr>
               <tr>
                 <td><input type="checkbox" id="chkPii" checked onclick="updateBtn()" style="accent-color:#0f6cbd;width:16px;height:16px;cursor:pointer"></td>
                 <td class="pol-name"><strong>PII Monitoring</strong><div class="pol-note">SharePoint, OneDrive</div></td>
-                <td style="font-size:12px;color:#555">1 policy</td>
+                <td style="font-size:12px;color:#555">PII Monitoring <span style="color:#aaa">·</span> SPO</td>
                 <td><span class="status-chip chip-full">✅ Full</span></td>
               </tr>
               <tr class="partial">
                 <td><input type="checkbox" id="chkGdpr" checked onclick="updateBtn()" style="accent-color:#0f6cbd;width:16px;height:16px;cursor:pointer"></td>
-                <td class="pol-name"><strong>GDPR Compliance Scan</strong><div class="pol-note">⚠️ Box condition unsupported in 1 policy. <a href="#" onclick="alert('Opens docs')">What gets skipped →</a></div></td>
-                <td style="font-size:12px;color:#555">2 policies<div class="pol-note">1 full · 1 partial</div></td>
+                <td class="pol-name"><strong>GDPR Compliance Scan</strong><div class="pol-note">SharePoint, Box</div></td>
+                <td style="font-size:12px;color:#555">
+                  GDPR Compliance Scan <span style="color:#aaa">·</span> SPO <span class="status-chip chip-full" style="font-size:10px;padding:1px 5px">Full</span><br>
+                  <span style="color:#7a5800">GDPR Compliance Scan <span style="color:#aaa">·</span> 3P <span class="status-chip chip-partial" style="font-size:10px;padding:1px 5px">Partial</span></span>
+                  <div class="pol-note">Box condition unsupported. <a href="#" onclick="alert('Opens docs')">What's missing →</a></div>
+                </td>
                 <td><span class="status-chip chip-partial">⚠️ Mixed</span></td>
               </tr>
               <tr class="disabled">
                 <td><input type="checkbox" disabled></td>
-                <td class="pol-name">Legacy Audit Policy<div class="pol-note">No Purview equivalent. <a href="#" onclick="alert('Opens docs')" style="color:#0f6cbd">Learn more →</a></div></td>
-                <td style="font-size:12px;color:#aaa">—</td>
+                <td class="pol-name">Legacy Audit Policy<div class="pol-note">All apps</div></td>
+                <td style="font-size:12px;color:#aaa">—<div class="pol-note" style="color:#a80000">Custom regex — no Purview equivalent. <a href="#" onclick="alert('Opens docs')" style="color:#a80000">Why? →</a></div></td>
                 <td><span class="status-chip chip-none">❌ Cannot migrate</span></td>
               </tr>
             </tbody>
@@ -193,19 +197,25 @@
       </div>
 
       <!-- Step 3: Success -->
-      <div class="success" id="stepSuccess">
-        <div class="checkmark">✅</div>
-        <h3 id="successTitle">3 policies created in Purview</h3>
-        <p style="color:#555;font-size:13px;background:#e6f4ea;border-radius:4px;padding:8px 12px;margin-top:4px;text-align:left">
-          Policies are <strong>drafts</strong> — no enforcement until you review and turn them on in Purview.
-        </p>
-        <div id="successPartial" style="display:none;color:#7a5800;font-size:12px;background:#fff3cd;border-radius:4px;padding:8px 12px;margin-top:6px;text-align:left">
-          ⚠️ <strong>GDPR Compliance Scan</strong> maps to 2 Purview policies — 1 created fully, 1 created with gaps (Box condition unsupported). Review before enabling. <a href="#" onclick="alert('Opens docs')" style="color:#7a5800;font-weight:600">See what's missing →</a>
+      <div id="stepSuccess" style="display:none;padding:4px 0">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <span style="font-size:28px">✅</span>
+          <div>
+            <h3 id="successTitle" style="font-size:15px;font-weight:600;color:#1e6e32">Policies created in Purview</h3>
+            <div style="font-size:12px;color:#555;margin-top:2px">Drafts only — no enforcement until you enable them in Purview.</div>
+          </div>
         </div>
-        <p style="color:#999;font-size:12px;background:#f8f8f8;border-radius:4px;padding:6px 12px;margin-top:6px;text-align:left">
-          ❌ <strong>Legacy Audit Policy</strong> skipped — no Purview equivalent. <a href="#" onclick="alert('Opens docs')" style="color:#0f6cbd">Re-create manually →</a>
-        </p>
-        <div class="btn-row" style="margin-top:12px;justify-content:center">
+
+        <div id="successCreated" style="margin-bottom:12px">
+          <!-- populated by JS -->
+        </div>
+
+        <div id="successSkippedWrap" style="border-top:1px solid #f0f0f0;padding-top:12px;margin-bottom:16px">
+          <div style="font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Not migrated</div>
+          <div id="successSkipped"><!-- populated by JS --></div>
+        </div>
+
+        <div class="btn-row" style="justify-content:flex-end">
           <button class="btn btn-secondary" onclick="closeModal()">Done</button>
           <button class="btn btn-purview" onclick="alert('Opens Purview DLP portal')">Review &amp; Enable in Purview →</button>
         </div>
@@ -291,17 +301,62 @@ function updateBtn(){
 }
 
 function startCreate(){
-  const gdprIncluded = document.getElementById('chkGdpr').checked;
-  const count = ['chkFin','chkPii','chkGdpr'].filter(id=>document.getElementById(id).checked).length;
+  const sel = {
+    fin: document.getElementById('chkFin').checked,
+    pii: document.getElementById('chkPii').checked,
+    gdpr: document.getElementById('chkGdpr').checked,
+  };
+  // Count Purview output policies (GDPR = 2 sub-policies)
+  const purviewCount = (sel.fin?1:0) + (sel.pii?1:0) + (sel.gdpr?2:0);
+  const mdaCount = Object.values(sel).filter(Boolean).length;
+
   document.getElementById('creatingMsg').innerHTML =
-    'Creating <strong>' + count + ' polic' + (count===1?'y':'ies') + '</strong> in Purview DLP…<br><span style="color:#aaa;font-size:12px;">This takes a few seconds</span>';
+    'Creating <strong>' + purviewCount + ' Purview polic' + (purviewCount===1?'y':'ies') + '</strong> from ' + mdaCount + ' MDA polic' + (mdaCount===1?'y':'ies') + '…<br><span style="color:#aaa;font-size:12px;">This takes a few seconds</span>';
   document.getElementById('stepGates').style.display='none';
   document.getElementById('stepCreating').style.display='flex';
+
   setTimeout(()=>{
     document.getElementById('stepCreating').style.display='none';
-    document.getElementById('successTitle').textContent = count + ' polic' + (count===1?'y':'ies') + ' created in Purview';
-    document.getElementById('successPartial').style.display = gdprIncluded ? 'block' : 'none';
-    document.getElementById('stepSuccess').style.display='flex';
+
+    // Build created list
+    const rows = [];
+    if(sel.fin) rows.push({name:'Financial Records Detection · SPO', status:'full'});
+    if(sel.pii) rows.push({name:'PII Monitoring · SPO', status:'full'});
+    if(sel.gdpr){
+      rows.push({name:'GDPR Compliance Scan · SPO', status:'full'});
+      rows.push({name:'GDPR Compliance Scan · 3P', status:'partial', reason:'Box condition unsupported'});
+    }
+
+    document.getElementById('successTitle').textContent = purviewCount + ' Purview polic' + (purviewCount===1?'y':'ies') + ' created';
+
+    const createdSection = '<div style="font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Created as drafts</div>'
+      + rows.map(r => {
+        if(r.status==='full'){
+          return '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f5f5f5;font-size:13px">'
+            +'<span style="color:#1e6e32">✅</span>'
+            +'<span style="flex:1">'+r.name+'</span>'
+            +'<span style="font-size:11px;color:#1e6e32;font-weight:600">Full</span>'
+            +'</div>';
+        } else {
+          return '<div style="display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid #f5f5f5;font-size:13px">'
+            +'<span style="color:#c47d00">⚠️</span>'
+            +'<span style="flex:1"><span style="color:#7a5800">'+r.name+'</span>'
+            +'<div style="font-size:11px;color:#999;margin-top:2px">'+r.reason+' — <a href="#" onclick="alert(\'Opens docs\')" style="color:#0f6cbd">What\'s missing →</a></div></span>'
+            +'<span style="font-size:11px;color:#7a5800;font-weight:600">Partial</span>'
+            +'</div>';
+        }
+      }).join('');
+    document.getElementById('successCreated').innerHTML = createdSection;
+
+    // Always-skipped
+    const skippedHtml = '<div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:4px 0">'
+      +'<span>❌</span>'
+      +'<span style="flex:1"><span style="color:#555">Legacy Audit Policy</span>'
+      +'<div style="font-size:11px;color:#999;margin-top:2px">Custom regex condition — no Purview equivalent. <a href="#" onclick="alert(\'Opens docs\')" style="color:#0f6cbd">Re-create manually →</a></div></span>'
+      +'</div>';
+    document.getElementById('successSkipped').innerHTML = skippedHtml;
+
+    document.getElementById('stepSuccess').style.display='block';
   }, 2200);
 }
 
