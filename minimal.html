@@ -67,7 +67,18 @@
   .success h3{font-size:15px;font-weight:600;color:#1e6e32}
   .success p{font-size:13px;color:#555;max-width:320px}
 
-  /* Buttons */
+  /* Policy selection table */
+  .pol-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+  .pol-table th{font-weight:600;color:#555;padding:6px 8px;border-bottom:2px solid #e8e8e8;text-align:left}
+  .pol-table td{padding:8px 8px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+  .pol-table tr.disabled td{color:#aaa}
+  .pol-table tr.partial td.pol-name{color:#7a5800}
+  .status-chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px}
+  .chip-full{background:#e6f4ea;color:#1e6e32}
+  .chip-partial{background:#fff3cd;color:#7a5800}
+  .chip-none{background:#f0f0f0;color:#999}
+  .pol-note{font-size:11px;color:#999;margin-top:2px}
+  .pol-note a{color:#0f6cbd}
   .btn-row{display:flex;gap:10px;justify-content:flex-end;margin-top:4px}
   .btn{padding:8px 20px;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer;border:none}
   .btn-primary{background:#0f6cbd;color:#fff}
@@ -132,29 +143,63 @@
           <div class="gate" id="gc3"><div class="gate-icon">—</div><div class="gate-label" style="color:#aaa">Enterprise account &amp; Azure subscription (PAYG)</div></div>
         </div>
         <div class="status-msg" id="gateError"></div>
-        <div id="migSummary" style="display:none;background:#f0f6ff;border:1px solid #b3d1f5;border-radius:6px;padding:10px 14px;font-size:13px;color:#003966;margin-bottom:16px;line-height:1.6">
-          <strong>3 of 4 policies</strong> will be migrated to Purview DLP.<br>
-          <span style="color:#7a5800">⚠️ <strong>Legacy Audit Policy</strong> has no Purview equivalent and will be skipped.</span>
-          <a href="#" onclick="alert('Opens: learn.microsoft.com/purview/dlp-policy-reference')" style="color:#0f6cbd;margin-left:4px;white-space:nowrap">Learn more →</a>
+
+        <!-- Policy selection — shown after gates pass -->
+        <div id="migSummary" style="display:none">
+          <div style="font-size:12px;color:#555;margin-bottom:8px">Select which policies to migrate:</div>
+          <table class="pol-table">
+            <thead><tr><th></th><th>Policy</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" checked disabled style="accent-color:#0f6cbd"></td>
+                <td class="pol-name"><strong>Financial Records Detection</strong><div class="pol-note">SharePoint, OneDrive</div></td>
+                <td><span class="status-chip chip-full">✅ Full</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked disabled style="accent-color:#0f6cbd"></td>
+                <td class="pol-name"><strong>PII Monitoring</strong><div class="pol-note">SharePoint, OneDrive</div></td>
+                <td><span class="status-chip chip-full">✅ Full</span></td>
+              </tr>
+              <tr class="partial">
+                <td><input type="checkbox" id="chkGdpr" checked onchange="updateBtn()" style="accent-color:#0f6cbd"></td>
+                <td class="pol-name"><strong>GDPR Compliance Scan</strong><div class="pol-note">⚠️ Box condition unsupported. <a href="#" onclick="alert('Opens docs')">What gets skipped →</a></div></td>
+                <td><span class="status-chip chip-partial">⚠️ Partial</span></td>
+              </tr>
+              <tr class="disabled">
+                <td><input type="checkbox" disabled></td>
+                <td class="pol-name">Legacy Audit Policy<div class="pol-note">No Purview equivalent. <a href="#" onclick="alert('Opens docs')" style="color:#0f6cbd">Learn more →</a></div></td>
+                <td><span class="status-chip chip-none">❌ Cannot migrate</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="font-size:11px;color:#888;margin-bottom:14px">Fully supported policies are always included. Partial policies are your choice.</div>
         </div>
+
         <div class="btn-row">
           <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-          <button class="btn btn-primary" id="btnCreate" disabled onclick="startCreate()">Create 3 Policies in Purview</button>
+          <button class="btn btn-primary" id="btnCreate" disabled onclick="startCreate()">Create Policies in Purview</button>
         </div>
       </div>
 
       <!-- Step 2: Creating -->
       <div class="creating" id="stepCreating">
         <div class="big-spin"></div>
-        <p>Creating <strong>3 policies</strong> in Purview DLP…<br><span style="color:#aaa;font-size:12px;">This takes a few seconds</span></p>
+        <p id="creatingMsg">Creating <strong>3 policies</strong> in Purview DLP…<br><span style="color:#aaa;font-size:12px;">This takes a few seconds</span></p>
       </div>
 
       <!-- Step 3: Success -->
       <div class="success" id="stepSuccess">
         <div class="checkmark">✅</div>
-        <h3>3 policies created in Purview</h3>
-        <p style="color:#555;font-size:13px;background:#e6f4ea;border-radius:4px;padding:8px 12px;margin-top:4px;">Policies are <strong>drafts</strong> — no enforcement until you review and turn them on in Purview.</p>
-        <p style="color:#7a5800;font-size:12px;background:#fff8ec;border-radius:4px;padding:6px 10px;margin-top:6px;">⚠️ <strong>Legacy Audit Policy</strong> could not be migrated — no Purview equivalent. <a href="#" onclick="alert('Opens docs page')" style="color:#7a5800;font-weight:600">Re-create manually →</a></p>
+        <h3 id="successTitle">3 policies created in Purview</h3>
+        <p style="color:#555;font-size:13px;background:#e6f4ea;border-radius:4px;padding:8px 12px;margin-top:4px;text-align:left">
+          Policies are <strong>drafts</strong> — no enforcement until you review and turn them on in Purview.
+        </p>
+        <div id="successPartial" style="display:none;color:#7a5800;font-size:12px;background:#fff3cd;border-radius:4px;padding:8px 12px;margin-top:6px;text-align:left">
+          ⚠️ <strong>GDPR Compliance Scan</strong> was created with gaps — Box condition not supported. Review before enabling. <a href="#" onclick="alert('Opens docs')" style="color:#7a5800;font-weight:600">See what's missing →</a>
+        </div>
+        <p style="color:#999;font-size:12px;background:#f8f8f8;border-radius:4px;padding:6px 12px;margin-top:6px;text-align:left">
+          ❌ <strong>Legacy Audit Policy</strong> skipped — no Purview equivalent. <a href="#" onclick="alert('Opens docs')" style="color:#0f6cbd">Re-create manually →</a>
+        </p>
         <div class="btn-row" style="margin-top:12px;justify-content:center">
           <button class="btn btn-secondary" onclick="closeModal()">Done</button>
           <button class="btn btn-purview" onclick="alert('Opens Purview DLP portal')">Review &amp; Enable in Purview →</button>
@@ -227,16 +272,29 @@ function runGates(){
       if(i===GATES.length-1 && GATES.every(x=>x.pass)){
         document.getElementById('btnCreate').disabled=false;
         document.getElementById('migSummary').style.display='block';
+        updateBtn();
       }
     }, g.delay);
   });
 }
 
+function updateBtn(){
+  const gdprIncluded = document.getElementById('chkGdpr').checked;
+  const count = gdprIncluded ? 3 : 2;
+  document.getElementById('btnCreate').textContent = 'Create ' + count + ' Polic' + (count===1?'y':'ies') + ' in Purview';
+}
+
 function startCreate(){
+  const gdprIncluded = document.getElementById('chkGdpr').checked;
+  const count = gdprIncluded ? 3 : 2;
+  document.getElementById('creatingMsg').innerHTML =
+    'Creating <strong>' + count + ' polic' + (count===1?'y':'ies') + '</strong> in Purview DLP…<br><span style="color:#aaa;font-size:12px;">This takes a few seconds</span>';
   document.getElementById('stepGates').style.display='none';
   document.getElementById('stepCreating').style.display='flex';
   setTimeout(()=>{
     document.getElementById('stepCreating').style.display='none';
+    document.getElementById('successTitle').textContent = count + ' polic' + (count===1?'y':'ies') + ' created in Purview';
+    document.getElementById('successPartial').style.display = gdprIncluded ? 'block' : 'none';
     document.getElementById('stepSuccess').style.display='flex';
   }, 2200);
 }
