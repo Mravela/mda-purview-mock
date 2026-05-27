@@ -961,53 +961,33 @@ html[data-theme="dark"] .prereq-acc-hdr .pq-warn-badge{background:#3b2008;border
 </div>
 
 <!-- ══════════════════════════════════════════════════ -->
-<!-- VIEW 6 · MDA — POLICIES CREATED (SUMMARY)          -->
+<!-- VIEW 6 · MDA — SUMMARY                             -->
 <!-- ══════════════════════════════════════════════════ -->
 <div class="view" id="v6">
-  <div class="mig-complete-hdr">
-    <div class="mig-complete-icon">&#x2705;</div>
-    <div>
-      <div class="mig-complete-title" id="v6Title">8 policies created in Purview</div>
-      <div class="mig-complete-sub" id="v6Sub">All in draft mode — no enforcement until you enable each one</div>
+  <div class="banner bn-ok" style="margin-bottom:20px;">
+    <span class="b-ico">✅</span>
+    <div class="b-body">
+      <div class="b-title" id="v6Title">8 policies created in Purview — drafts only, no enforcement yet</div>
+      <div id="v6Created" style="margin-top:8px;display:flex;flex-direction:column;gap:4px;font-size:13px;"></div>
     </div>
   </div>
 
-  <div class="mig-cols">
-    <div class="mig-col">
-      <div class="mig-col-hdr mig-col-hdr-ok" id="v6CreatedHdr">&#x2705; Created (8)</div>
-      <div id="v6Created">
-        <div class="mig-col-item"><strong>Financial Records Detection</strong><div class="mig-pills"><span class="mpill mpill-al">Auto-labeling · Simulation</span></div></div>
-        <div class="mig-col-item"><strong>Customer PII Protection</strong><div class="mig-pills"><span class="mpill mpill-spo">SPO DLP · Simulation</span><span class="mpill mpill-3p">3P DLP · Disabled</span></div></div>
-        <div class="mig-col-item"><strong>Financial Records Detection</strong><div class="mig-pills"><span class="mpill mpill-spo">SPO DLP · Simulation</span><span class="mpill-gap">⚠ Partial</span></div></div>
-        <div class="mig-col-item"><strong>IP Leak Prevention</strong><div class="mig-pills"><span class="mpill mpill-spo">SPO DLP · Simulation</span><span class="mpill mpill-3p">3P DLP · Disabled</span></div></div>
-        <div class="mig-col-item"><strong>GDPR Compliance Scan</strong><div class="mig-pills"><span class="mpill mpill-spo">SPO DLP · Simulation</span><span class="mpill mpill-3p">3P DLP · Disabled</span><span class="mpill-gap">⚠ Partial</span></div></div>
-      </div>
-    </div>
-    <div class="mig-col mig-col-right">
-      <div class="mig-col-hdr mig-col-hdr-err" id="v6NotMigratedHdr">&#x274C; Not Migrated (1)</div>
-      <div id="v6NotMigrated">
-        <div class="mig-col-item">
-          <strong>Legacy Audit Policy</strong>
-          <div style="font-size:12px;color:var(--cp-text-muted);margin-top:3px;">No Purview equivalent — stays active in MDA. <a class="docs-link" style="display:inline;" onclick="alert('Opens: learn.microsoft.com/purview/dlp-policy-reference')">Re-create manually →</a></div>
-        </div>
-      </div>
+  <div id="v6NotMigratedWrap" class="banner bn-warn">
+    <span class="b-ico">⚠️</span>
+    <div class="b-body">
+      <div class="b-title" id="v6NotMigratedHdr">1 policy could not be migrated</div>
+      <div id="v6NotMigrated" style="font-size:13px;margin-top:4px;"></div>
     </div>
   </div>
 
-  <div class="ns-simple">
-    <div class="ns-simple-title">Next steps</div>
-    <div class="ns-simple-row">
-      <span class="ns-num">1</span>
-      <div><strong>Review your new policies in Purview</strong><span>SPO/ODB and Auto-labeling policies are in Simulation — they scan but don't enforce yet.</span></div>
-    </div>
-    <div class="ns-simple-row">
-      <span class="ns-num">2</span>
-      <div><strong>Disable MDA policy → then enable Purview policy</strong><span>Do this one at a time to avoid duplicate enforcement.</span></div>
-    </div>
+  <div style="font-size:13px;color:var(--cp-text-m);margin-bottom:20px;line-height:1.7;">
+    <strong style="color:var(--cp-text);">Next:</strong>
+    Review policies in Purview · Disable each MDA policy · Then enable its Purview equivalent · Do this one at a time.
+    &nbsp;<a class="docs-link" style="display:inline;" onclick="alert('Opens: learn.microsoft.com/purview/mda-to-purview-migration#next-steps')">📄 Guidance →</a>
   </div>
 
-  <div class="act-row" style="margin-top:20px;">
-    <button class="btn btn-pv btn-lg" onclick="go(7)">View Policies in Purview &rarr;</button>
+  <div class="act-row">
+    <button class="btn btn-pv" onclick="go(7)">View in Purview &rarr;</button>
     <button class="btn btn-s" onclick="returnToMda()">&larr; Back to MDA</button>
   </div>
 </div>
@@ -1369,34 +1349,33 @@ function flyoutGo(n){
 
 function renderV6(created){
   const GAP_MAP = {
-    'Financial Records Detection': {spo:'GAP-001'},
-    'GDPR Compliance Scan':        {spo:'GAP-002, 003', '3p':'GAP-002'},
+    'Financial Records Detection': {spo:true},
+    'GDPR Compliance Scan':        {spo:true, '3p':true},
   };
   const PILL_CLS = {al:'mpill-al', spo:'mpill-spo', '3p':'mpill-3p'};
   const n = created.length;
   const skipped = PROG.filter(p => !created.some(c => c.name===p.name && c.group===p.group));
-  const notMigCount = skipped.length + 1; // +1 for Legacy Audit (cannot migrate)
+  const notMigCount = skipped.length + 1;
 
-  document.getElementById('v6Title').textContent = n + ' ' + (n===1?'policy':'policies') + ' created in Purview';
-  document.getElementById('v6CreatedHdr').textContent = '\u2705 Created (' + n + ')';
-  document.getElementById('v6NotMigratedHdr').textContent = '\u274C Not Migrated (' + notMigCount + ')';
+  document.getElementById('v6Title').textContent = n + ' ' + (n===1?'policy':'policies') + ' created in Purview — drafts only, no enforcement yet';
+  document.getElementById('v6NotMigratedHdr').textContent = notMigCount + ' ' + (notMigCount===1?'policy':'policies') + ' could not be migrated';
 
   document.getElementById('v6Created').innerHTML = created.map(p => {
-    const gap = GAP_MAP[p.name] && GAP_MAP[p.name][p.group] ? GAP_MAP[p.name][p.group] : null;
+    const isPartial = GAP_MAP[p.name] && GAP_MAP[p.name][p.group];
     const cls = PILL_CLS[p.group] || 'mpill-spo';
-    return '<div class="mig-col-item"><strong>'+p.name+'</strong><div class="mig-pills">'
-      + '<span class="mpill '+cls+'">'+p.type+' \u00b7 '+p.mode+'</span>'
-      + (gap ? '<span class="mpill-gap">\u26a0 Partial \u00b7 '+gap+'</span>' : '')
-      + '</div></div>';
+    return '<div style="display:flex;align-items:center;gap:6px;">'
+      + '<span class="mpill '+cls+'">'+p.name+'</span>'
+      + (isPartial ? '<span class="mpill-gap">\u26a0\ufe0f Partial</span>' : '')
+      + '</div>';
   }).join('');
 
-  const skippedHtml = skipped.map(p =>
-    '<div class="mig-col-item"><strong>'+p.name+'</strong>'
-    + '<div style="font-size:12px;color:var(--cp-text-muted);margin-top:3px;">Not selected for migration</div></div>'
+  const notMigHtml = skipped.map(p =>
+    '<div>'+p.name+' — not selected</div>'
   ).join('');
-  document.getElementById('v6NotMigrated').innerHTML = skippedHtml
-    + '<div class="mig-col-item"><strong>Legacy Audit Policy</strong>'
-    + '<div style="font-size:12px;color:var(--cp-text-muted);margin-top:3px;">Custom regex condition \u2014 no Purview equivalent. Review manually.</div></div>';
+  const notMigWrap = document.getElementById('v6NotMigratedWrap');
+  document.getElementById('v6NotMigrated').innerHTML = notMigHtml
+    + '<div>Legacy Audit Policy — no Purview equivalent. <a class="docs-link" style="display:inline;" onclick="alert(\'Opens: learn.microsoft.com/purview/dlp-policy-reference\')">Re-create manually \u2192</a></div>';
+  if(notMigWrap) notMigWrap.style.display = notMigCount > 0 ? 'flex' : 'none';
 }
 
 function go(n){
