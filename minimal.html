@@ -168,14 +168,14 @@
                 <td style="font-size:12px;color:#555">
                   SPO DLP <span class="status-chip chip-full" style="font-size:10px;padding:1px 5px">Full</span><br>
                   <span style="color:#7a5800">3P DLP <span class="status-chip chip-partial" style="font-size:10px;padding:1px 5px">Partial</span></span>
-                  <div class="pol-note">Box condition unsupported. <a href="#" onclick="alert('Opens docs')">What's missing →</a></div>
+                  <div class="pol-note">3P cannot migrate. <a href="#" onclick="alert('Opens docs')" style="color:#0f6cbd">Supported conditions &amp; actions in Purview →</a></div>
                 </td>
                 <td><span class="status-chip chip-partial">⚠️ Mixed</span></td>
               </tr>
               <tr class="disabled">
                 <td><input type="checkbox" disabled></td>
                 <td class="pol-name">Legacy Audit Policy<div class="pol-note">All apps</div></td>
-                <td style="font-size:12px;color:#aaa">—<div class="pol-note" style="color:#a80000">Custom regex — no Purview equivalent. <a href="#" onclick="alert('Opens docs')" style="color:#a80000">Why? →</a></div></td>
+                <td style="font-size:12px;color:#aaa">—<div class="pol-note" style="color:#a80000">Cannot migrate. <a href="#" onclick="alert('Opens docs')" style="color:#0f6cbd">Supported conditions &amp; actions in Purview →</a></div></td>
                 <td><span class="status-chip chip-none">❌ Cannot migrate</span></td>
               </tr>
             </tbody>
@@ -341,7 +341,7 @@ function startCreate(){
           return '<div style="display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid #f5f5f5;font-size:13px">'
             +'<span style="color:#c47d00">⚠️</span>'
             +'<span style="flex:1"><span style="color:#7a5800">'+r.name+'</span>'
-            +'<div style="font-size:11px;color:#999;margin-top:2px">'+r.reason+' — <a href="#" onclick="alert(\'Opens docs\')" style="color:#0f6cbd">What\'s missing →</a></div></span>'
+            +'<div style="font-size:11px;color:#999;margin-top:2px">3P cannot migrate. <a href="#" onclick="alert(\'Opens docs\')" style="color:#0f6cbd">Supported conditions &amp; actions in Purview →</a></div></span>'
             +'<span style="font-size:11px;color:#7a5800;font-weight:600">Partial</span>'
             +'</div>';
         }
@@ -352,7 +352,7 @@ function startCreate(){
     const skippedHtml = '<div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:4px 0">'
       +'<span>❌</span>'
       +'<span style="flex:1"><span style="color:#555">Legacy Audit Policy</span>'
-      +'<div style="font-size:11px;color:#999;margin-top:2px">Custom regex condition — no Purview equivalent. <a href="#" onclick="alert(\'Opens docs\')" style="color:#0f6cbd">Re-create manually →</a></div></span>'
+      +'<div style="font-size:11px;color:#999;margin-top:2px">Cannot migrate. <a href="#" onclick="alert(\'Opens docs\')" style="color:#0f6cbd">Supported conditions &amp; actions in Purview →</a></div></span>'
       +'</div>';
     document.getElementById('successSkipped').innerHTML = skippedHtml;
 
