@@ -148,26 +148,30 @@
         <div id="migSummary" style="display:none">
           <div style="font-size:12px;color:#555;margin-bottom:8px">Select which policies to migrate:</div>
           <table class="pol-table">
-            <thead><tr><th></th><th>Policy</th><th>Status</th></tr></thead>
+            <thead><tr><th></th><th>MDA Policy</th><th>Purview output</th><th>Status</th></tr></thead>
             <tbody>
               <tr>
                 <td><input type="checkbox" id="chkFin" checked onclick="updateBtn()" style="accent-color:#0f6cbd;width:16px;height:16px;cursor:pointer"></td>
                 <td class="pol-name"><strong>Financial Records Detection</strong><div class="pol-note">SharePoint, OneDrive</div></td>
+                <td style="font-size:12px;color:#555">1 policy</td>
                 <td><span class="status-chip chip-full">✅ Full</span></td>
               </tr>
               <tr>
                 <td><input type="checkbox" id="chkPii" checked onclick="updateBtn()" style="accent-color:#0f6cbd;width:16px;height:16px;cursor:pointer"></td>
                 <td class="pol-name"><strong>PII Monitoring</strong><div class="pol-note">SharePoint, OneDrive</div></td>
+                <td style="font-size:12px;color:#555">1 policy</td>
                 <td><span class="status-chip chip-full">✅ Full</span></td>
               </tr>
               <tr class="partial">
                 <td><input type="checkbox" id="chkGdpr" checked onclick="updateBtn()" style="accent-color:#0f6cbd;width:16px;height:16px;cursor:pointer"></td>
-                <td class="pol-name"><strong>GDPR Compliance Scan</strong><div class="pol-note">⚠️ Box condition unsupported. <a href="#" onclick="alert('Opens docs')">What gets skipped →</a></div></td>
-                <td><span class="status-chip chip-partial">⚠️ Partial</span></td>
+                <td class="pol-name"><strong>GDPR Compliance Scan</strong><div class="pol-note">⚠️ Box condition unsupported in 1 policy. <a href="#" onclick="alert('Opens docs')">What gets skipped →</a></div></td>
+                <td style="font-size:12px;color:#555">2 policies<div class="pol-note">1 full · 1 partial</div></td>
+                <td><span class="status-chip chip-partial">⚠️ Mixed</span></td>
               </tr>
               <tr class="disabled">
                 <td><input type="checkbox" disabled></td>
                 <td class="pol-name">Legacy Audit Policy<div class="pol-note">No Purview equivalent. <a href="#" onclick="alert('Opens docs')" style="color:#0f6cbd">Learn more →</a></div></td>
+                <td style="font-size:12px;color:#aaa">—</td>
                 <td><span class="status-chip chip-none">❌ Cannot migrate</span></td>
               </tr>
             </tbody>
@@ -196,7 +200,7 @@
           Policies are <strong>drafts</strong> — no enforcement until you review and turn them on in Purview.
         </p>
         <div id="successPartial" style="display:none;color:#7a5800;font-size:12px;background:#fff3cd;border-radius:4px;padding:8px 12px;margin-top:6px;text-align:left">
-          ⚠️ <strong>GDPR Compliance Scan</strong> was created with gaps — Box condition not supported. Review before enabling. <a href="#" onclick="alert('Opens docs')" style="color:#7a5800;font-weight:600">See what's missing →</a>
+          ⚠️ <strong>GDPR Compliance Scan</strong> maps to 2 Purview policies — 1 created fully, 1 created with gaps (Box condition unsupported). Review before enabling. <a href="#" onclick="alert('Opens docs')" style="color:#7a5800;font-weight:600">See what's missing →</a>
         </div>
         <p style="color:#999;font-size:12px;background:#f8f8f8;border-radius:4px;padding:6px 12px;margin-top:6px;text-align:left">
           ❌ <strong>Legacy Audit Policy</strong> skipped — no Purview equivalent. <a href="#" onclick="alert('Opens docs')" style="color:#0f6cbd">Re-create manually →</a>
