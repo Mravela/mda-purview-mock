@@ -323,6 +323,34 @@ html[data-theme="dark"] .tool-creates{background:var(--pv-soft);border-color:var
 .sec-spo{color:#15803d;}html[data-theme="dark"] .sec-spo{color:#4ade80;}
 .sec-3p{color:#7c3aed;}html[data-theme="dark"] .sec-3p{color:#c084fc;}
 .sec-cant{color:var(--cp-danger);}
+
+/* ── V3 Inline expand (condition mapping detail) ── */
+.expand-btn{font-size:11px;padding:2px 7px;border-radius:4px;border:1px solid var(--cp-border);background:var(--cp-surface-soft);color:var(--cp-text-m);cursor:pointer;font-family:inherit;margin-left:6px;display:inline-flex;align-items:center;gap:3px;transition:all 0.15s;white-space:nowrap;}
+.expand-btn:hover{background:var(--cp-accent-soft);border-color:var(--cp-accent);color:var(--cp-accent);}
+.detail-row td{padding:0!important;border-bottom:2px solid var(--cp-warn)!important;}
+.detail-box{background:var(--cp-bg-e);border-top:2px solid var(--cp-warn);padding:14px 16px 16px;font-size:13px;}
+.detail-title{font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.04em;color:var(--cp-text-m);margin-bottom:10px;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+@media(max-width:640px){.detail-grid{grid-template-columns:1fr;}}
+.detail-col{border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:6px;}
+.detail-ok{background:#f0fdf4;border:1px solid #86efac;}
+.detail-warn{background:#fef9ee;border:1px solid #f5c84a;}
+html[data-theme="dark"] .detail-ok{background:#052e16;border-color:#166534;}
+html[data-theme="dark"] .detail-warn{background:#3b2008;border-color:#b45309;}
+.detail-col-hdr{font-weight:700;font-size:12px;}
+.detail-ok .detail-col-hdr{color:#15803d;}html[data-theme="dark"] .detail-ok .detail-col-hdr{color:#4ade80;}
+.detail-warn .detail-col-hdr{color:#92400e;}html[data-theme="dark"] .detail-warn .detail-col-hdr{color:#fcd34d;}
+.detail-item{font-size:12px;line-height:1.5;color:var(--cp-text);}
+.detail-ack{display:flex;align-items:flex-start;gap:8px;font-size:12px;cursor:pointer;background:var(--cp-surface);border:1px solid var(--cp-border);border-radius:6px;padding:8px 10px;color:var(--cp-text);}
+.detail-ack input{flex-shrink:0;margin-top:1px;accent-color:var(--pv);}
+/* ── V3 Prereq accordion ── */
+.prereq-accordion{background:var(--cp-surface);border:1px solid var(--cp-warn);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.prereq-acc-hdr{width:100%;background:var(--cp-surface-soft);border:none;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;cursor:pointer;color:var(--cp-text);font-family:inherit;gap:8px;}
+.prereq-acc-hdr:hover{background:var(--cp-accent-soft);}
+.prereq-acc-hdr .pq-warn-badge{font-size:11px;font-weight:700;color:var(--cp-warn);background:#fef9ee;border:1px solid #f5c84a;border-radius:4px;padding:1px 6px;white-space:nowrap;}
+html[data-theme="dark"] .prereq-acc-hdr .pq-warn-badge{background:#3b2008;border-color:#b45309;color:#fcd34d;}
+.prereq-acc-spacer{flex:1;}
+.prereq-acc-toggle{font-size:11px;color:var(--cp-link);font-weight:600;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -439,15 +467,8 @@ html[data-theme="dark"] .tool-creates{background:var(--pv-soft);border-color:var
     <div class="gate-card" id="gc4">
       <div class="gate-ico pulse" id="gi4">⏳</div>
       <div>
-        <div class="gate-title">Purview Enterprise Account</div>
-        <div class="gate-desc" id="gd4">Checking for Purview Enterprise account setup…</div>
-      </div>
-    </div>
-    <div class="gate-card" id="gc5">
-      <div class="gate-ico pulse" id="gi5">⏳</div>
-      <div>
-        <div class="gate-title">Azure Subscription (PAYG)</div>
-        <div class="gate-desc" id="gd5">Checking Azure subscription linked to Purview account for 3P PAYG billing…</div>
+        <div class="gate-title">Purview Enterprise Account &amp; Azure Subscription (PAYG)</div>
+        <div class="gate-desc" id="gd4">Checking Purview Enterprise account and linked Azure subscription for 3P PAYG billing…</div>
       </div>
     </div>
   </div>
@@ -455,8 +476,8 @@ html[data-theme="dark"] .tool-creates{background:var(--pv-soft);border-color:var
     <div class="banner bn-ok">
       <span class="b-ico">✅</span>
       <div class="b-body">
-        <div class="b-title">All 5 checks passed</div>
-        Purview IP license verified · Security Admin (MDA) + Compliance Admin (Purview) confirmed · Purview Enterprise account active · Azure subscription linked (Contoso EA) for 3P PAYG billing — <strong>admin@contoso.com</strong>
+        <div class="b-title">All 4 checks passed</div>
+        Purview IP license verified · Security Admin (MDA) + Compliance Admin (Purview) confirmed · Purview Enterprise account active &amp; Azure subscription linked (Contoso EA) for 3P PAYG billing — <strong>admin@contoso.com</strong>
       </div>
     </div>
     <div class="act-row" style="justify-content:center;">
@@ -466,101 +487,181 @@ html[data-theme="dark"] .tool-creates{background:var(--pv-soft);border-color:var
 </div>
 
 <!-- ══════════════════════════════════════════════════ -->
-<!-- VIEW 3 · MDA — POLICY READINESS                    -->
+<!-- VIEW 3 · MDA — ASSESS & SET UP (COMBINED)          -->
 <!-- ══════════════════════════════════════════════════ -->
 <div class="view" id="v3">
   <div class="page-hdr">
-    <div class="page-title">Policy Readiness Assessment</div>
-    <div class="page-sub">Classification is based purely on Purview filter/condition/action equivalence — not on licensing, PAYG, or permissions</div>
+    <div class="page-title">Assess &amp; Set Up Policies in Purview</div>
+    <div class="page-sub">Review how each MDA policy translates, select which to create, then launch — all without leaving MDA</div>
   </div>
+
   <div class="stat-row">
     <div class="stat-card sc-can"><div class="sv">3</div><div class="sl">Can Migrate</div></div>
-    <div class="stat-card sc-part"><div class="sv">1</div><div class="sl">Partial Migrate</div></div>
+    <div class="stat-card sc-part"><div class="sv">1</div><div class="sl">Partial</div></div>
     <div class="stat-card sc-cant"><div class="sv">1</div><div class="sl">Cannot Migrate</div></div>
-    <div class="stat-card"><div class="sv">8</div><div class="sl">Purview Policies (output)</div></div>
+    <div class="stat-card"><div class="sv">8</div><div class="sl">Purview Output Policies</div></div>
   </div>
 
   <div class="info-box">
-    💡 A single MDA policy may generate multiple Purview policies based on its app scope and governance actions.
-    Policies with <strong>Apply/Remove Sensitivity Label</strong> actions produce Auto-labeling policies in Purview Information Protection — the migration tool creates these automatically.
+    💡 A single MDA policy may produce multiple Purview policies based on app scope and governance actions.
+    Policies with <strong>Apply/Remove Sensitivity Label</strong> actions produce Auto-labeling policies automatically.
+    Purview policies are created as <strong>drafts only</strong> — no enforcement until you enable them.
   </div>
 
+  <!-- Prerequisites accordion -->
+  <div class="prereq-accordion">
+    <button class="prereq-acc-hdr" onclick="togglePrereqAcc()">
+      <span>📋 Prerequisites</span>
+      <span class="pq-warn-badge">⚠ 1 item needs attention</span>
+      <span class="prereq-acc-spacer"></span>
+      <span class="prereq-acc-toggle" id="v3PqToggle">▼ Show</span>
+    </button>
+    <div id="v3PqBody" style="display:none;">
+      <div class="prereq-panel" style="margin:0;border:none;border-radius:0;border-top:1px solid var(--cp-border);">
+        <div class="pq">
+          <span class="pq-ico">✅</span>
+          <div class="pq-lbl">3P app connectors active in MDA (Box, Dropbox, Google Workspace, Salesforce)<small>Required for 3P App DLP policy creation</small></div>
+          <div class="pq-right"><span class="pq-ok">✓ Verified</span><a class="docs-link" onclick="alert('Opens: learn.microsoft.com/defender-cloud-apps/enable-instant-visibility-protection-and-governance-actions-for-your-apps')">📄 Connector docs →</a></div>
+        </div>
+        <div class="pq">
+          <span class="pq-ico">✅</span>
+          <div class="pq-lbl">SPO / OneDrive workloads enabled in Purview DLP scope<small>Required for SharePoint and OneDrive DLP policies</small></div>
+          <div class="pq-right"><span class="pq-ok">✓ Verified</span></div>
+        </div>
+        <div class="pq">
+          <span class="pq-ico">⚠️</span>
+          <div class="pq-lbl">Sensitivity labels not yet published to SharePoint / OneDrive scope<small>Required for <strong>Financial Records Detection</strong> — Apply Sensitivity Label action. Policy will be created but the label won't apply until published.</small></div>
+          <div class="pq-right"><span class="pq-warn">⚠ Not detected</span><a class="docs-link" onclick="alert('Opens: learn.microsoft.com/purview/sensitivity-labels-sharepoint-onedrive-files')">📄 How to fix →</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Combined assessment + selection table -->
   <div class="tbl">
     <table>
       <thead><tr>
+        <th style="width:32px;"><input type="checkbox" id="v3All" checked onchange="toggleAllV3(this.checked)"></th>
         <th>MDA Policy</th><th>App Scope</th><th>Classification</th><th>Purview Output Policies</th><th>Gaps / Notes</th>
       </tr></thead>
       <tbody>
+        <!-- Customer PII Protection — CAN MIGRATE -->
         <tr>
+          <td><input type="checkbox" class="v3-cb" checked data-mda="Customer PII Protection" onchange="updateV3Btn()"></td>
           <td><strong>Customer PII Protection</strong></td>
           <td style="font-size:12px;">SPO · ODB · Box · Dropbox</td>
           <td><span class="badge b-can">✅ Can Migrate</span></td>
           <td><div style="display:flex;flex-direction:column;gap:4px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-3p">3P DLP</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div></div></td>
           <td style="font-size:12px;color:var(--cp-ok);">All conditions fully supported</td>
         </tr>
+        <!-- Financial Records Detection — PARTIAL -->
         <tr>
-          <td><strong>Financial Records Detection</strong></td>
-          <td style="font-size:12px;">SPO · ODB · GWS</td>
-          <td><span class="badge b-part">⚠️ Partial Migrate</span></td>
-          <td><div style="display:flex;flex-direction:column;gap:4px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-warn);">⚠️ Partial</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-al">Auto-label</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div></div></td>
+          <td><input type="checkbox" class="v3-cb" checked data-mda="Financial Records Detection" onchange="updateV3Btn()"></td>
           <td>
-            <ul class="gap-list">
-              <li><span class="rc" title="ContentIsNotLabeled not supported for SPO/ODB in Purview DLP. No creatable workaround.">GAP-001</span> Unlabeled file detection (SPO/ODB) — no Purview DLP equivalent</li>
-            </ul>
+            <strong>Financial Records Detection</strong>
+            <button class="expand-btn" id="expBtn1" onclick="toggleDetail('det1','expBtn1')">▶ See what maps</button>
+          </td>
+          <td style="font-size:12px;">SPO · ODB · GWS</td>
+          <td><span class="badge b-part">⚠️ Partial</span></td>
+          <td><div style="display:flex;flex-direction:column;gap:4px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-warn);">⚠️ Partial</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-al">Auto-label</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div></div></td>
+          <td><ul class="gap-list"><li><span class="rc" title="ContentIsNotLabeled not supported for SPO/ODB in Purview DLP.">GAP-001</span> Unlabeled file detection — no Purview equivalent</li></ul></td>
+        </tr>
+        <tr id="det1" class="detail-row" style="display:none;">
+          <td colspan="6">
+            <div class="detail-box">
+              <div class="detail-title">Financial Records Detection — Condition mapping</div>
+              <div class="detail-grid">
+                <div class="detail-col detail-ok">
+                  <div class="detail-col-hdr">✅ Will be created (2 Purview policies)</div>
+                  <div class="detail-item">📘 <strong>SPO/ODB DLP</strong> — SSN &amp; Credit Card detection → Block access + Notify admin (Simulation mode)</div>
+                  <div class="detail-item">🟢 <strong>Auto-labeling policy</strong> — Apply "Confidential - Finance" label to matching files (Simulation mode)</div>
+                </div>
+                <div class="detail-col detail-warn">
+                  <div class="detail-col-hdr">❌ Will be dropped (1 condition)</div>
+                  <div class="detail-item"><strong>Unlabeled file detection (ContentIsNotLabeled) — GAP-001</strong><br>No equivalent condition exists in Purview SPO/ODB DLP. Gap will be documented in the Purview policy description for manual follow-up.</div>
+                </div>
+              </div>
+              <label class="detail-ack">
+                <input type="checkbox" id="ack1" checked onchange="updateV3Btn()">
+                I understand GAP-001 (unlabeled file detection) will not be migrated. I'll review coverage after creation.
+              </label>
+            </div>
           </td>
         </tr>
+        <!-- IP Leak Prevention — CAN MIGRATE -->
         <tr>
+          <td><input type="checkbox" class="v3-cb" checked data-mda="IP Leak Prevention" onchange="updateV3Btn()"></td>
           <td><strong>IP Leak Prevention</strong></td>
           <td style="font-size:12px;">ODB · Dropbox · Salesforce</td>
           <td><span class="badge b-can">✅ Can Migrate</span></td>
           <td><div style="display:flex;flex-direction:column;gap:4px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-3p">3P DLP</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div></div></td>
           <td style="font-size:12px;color:var(--cp-ok);">All conditions fully supported</td>
         </tr>
+        <!-- GDPR Compliance Scan — PARTIAL -->
         <tr>
-          <td><strong>GDPR Compliance Scan</strong></td>
+          <td><input type="checkbox" class="v3-cb" checked data-mda="GDPR Compliance Scan" onchange="updateV3Btn()"></td>
+          <td>
+            <strong>GDPR Compliance Scan</strong>
+            <button class="expand-btn" id="expBtn2" onclick="toggleDetail('det2','expBtn2')">▶ See what maps</button>
+          </td>
           <td style="font-size:12px;">SPO · Box · GWS</td>
-          <td><span class="badge b-part">⚠️ Partial Migrate</span></td>
+          <td><span class="badge b-part">⚠️ Partial</span></td>
           <td><div style="display:flex;flex-direction:column;gap:4px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-warn);">⚠️ Partial</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-3p">3P DLP</span><span style="font-size:11px;color:var(--cp-warn);">⚠️ Partial</span></div></div></td>
           <td>
             <ul class="gap-list">
-              <li><span class="rc" title="MIME type maps to extension list — some MIME types may not have an exact extension match">GAP-002</span> MIME type filter → extension mapping (info loss possible)</li>
-              <li><span class="rc" title="Sharing level 'Private' has no equivalent in Purview — this value is skipped">GAP-003</span> Sharing level "Private" — no Purview equivalent, skipped</li>
+              <li><span class="rc" title="MIME type maps to extension list — some MIME types may not have an exact extension match">GAP-002</span> MIME type → extension mapping (info loss)</li>
+              <li><span class="rc" title="Sharing level 'Private' has no equivalent in Purview — this value is skipped">GAP-003</span> Sharing level "Private" — no Purview equivalent</li>
             </ul>
           </td>
         </tr>
-        <tr>
+        <tr id="det2" class="detail-row" style="display:none;">
+          <td colspan="6">
+            <div class="detail-box">
+              <div class="detail-title">GDPR Compliance Scan — Condition mapping</div>
+              <div class="detail-grid">
+                <div class="detail-col detail-ok">
+                  <div class="detail-col-hdr">✅ Will be created (2 Purview policies)</div>
+                  <div class="detail-item">📘 <strong>SPO/ODB DLP</strong> — PII/GDPR content detection → Trash file + Notify user (Simulation mode)</div>
+                  <div class="detail-item">🟣 <strong>3P App DLP</strong> — Box + Google Workspace → Trash file, Legacy approach (Disabled mode)</div>
+                </div>
+                <div class="detail-col detail-warn">
+                  <div class="detail-col-hdr">❌ Will be dropped / converted (2 conditions)</div>
+                  <div class="detail-item"><strong>MIME type filter — GAP-002</strong><br>Converted to file extension list. Some MIME types may not have an exact extension match; review after creation.</div>
+                  <div class="detail-item"><strong>Sharing level "Private" — GAP-003</strong><br>No Purview equivalent — excluded. Gaps will be documented in the policy description field.</div>
+                </div>
+              </div>
+              <label class="detail-ack">
+                <input type="checkbox" id="ack2" checked onchange="updateV3Btn()">
+                I understand GAP-002 and GAP-003 will not be fully migrated. I'll review and add missing conditions after creation.
+              </label>
+            </div>
+          </td>
+        </tr>
+        <!-- Legacy Audit Policy — CANNOT MIGRATE -->
+        <tr style="opacity:0.5;">
+          <td><input type="checkbox" disabled></td>
           <td><strong>Legacy Audit Policy</strong></td>
           <td style="font-size:12px;">SPO · ODB</td>
           <td><span class="badge b-cant">❌ Cannot Migrate</span></td>
           <td>—</td>
-          <td>
-            <ul class="gap-list">
-              <li><span class="rc" title="Custom regex expressions have no equivalent condition in Purview DLP">GAP-010</span> Custom regex expression — no Purview equivalent</li>
-            </ul>
-          </td>
+          <td><ul class="gap-list"><li><span class="rc" title="Custom regex expressions have no equivalent condition in Purview DLP">GAP-010</span> Custom regex — no Purview equivalent</li></ul></td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div class="ack-card">
-    <div class="ack-title">⚠️ Acknowledge Partial Migration Gaps Before Proceeding</div>
-    <div style="font-size:12px;margin-bottom:10px;color:var(--cp-text-s);">Partial policies will be created with supported conditions only. Unsupported conditions are documented in the Purview policy description field.</div>
-    <div class="ack-row">
-      <input type="checkbox" id="ack1" onchange="checkAcks()">
-      <label for="ack1"><strong>Financial Records Detection</strong> — "Unlabeled file detection" for SPO/ODB will not be migrated (no Purview DLP equivalent for ContentIsNotLabeled). The Auto-labeling policy will still be created. Recommend reviewing Purview Auto-labeling for detection coverage.</label>
-    </div>
-    <div class="ack-row">
-      <input type="checkbox" id="ack2" onchange="checkAcks()">
-      <label for="ack2"><strong>GDPR Compliance Scan</strong> — MIME type filter converts to file extension list (information loss possible). Sharing level "Private" has no Purview equivalent and will be excluded. Review the created policy in Purview and add missing conditions manually.</label>
-    </div>
+  <!-- PAYG ack — shown only when 3P policies are selected -->
+  <div id="v3PaygAck" style="padding:8px 0 2px;">
+    <label class="detail-ack" style="border-color:#f5c84a;background:#fef9ee;">
+      <input type="checkbox" id="v3PaygCb" checked onchange="updateV3Btn()" style="accent-color:var(--cp-warn);">
+      <span>I acknowledge the 12-month free period for 3P DLP and that the PAYG protected-asset meter applies thereafter. &nbsp;<a class="docs-link" style="display:inline;" onclick="alert('learn.microsoft.com/purview/dlp-microsoft-defender-integration')">Billing details →</a></span>
+    </label>
   </div>
 
   <div class="act-row">
-    <button class="btn btn-pv btn-lg" id="btnLaunch" onclick="launchPurview()">
-      Open Purview Migration Wizard →
-    </button>
-    <span class="act-note">Unacknowledged partial policies will be skipped · 1 policy excluded (Cannot Migrate) · Opens Microsoft Purview</span>
+    <button class="btn btn-pv btn-lg" id="btnV3Create" onclick="startProgressV3()">🟢 Create 8 selected policies in Purview</button>
+    <span class="act-note">Drafts only · No enforcement until you enable · Full rollback on failure</span>
+    <a href="#" style="color:var(--cp-link);font-size:13px;margin-left:auto;" onclick="go(4);return false;">Review by policy type in detail →</a>
   </div>
 </div>
 
@@ -568,11 +669,11 @@ html[data-theme="dark"] .tool-creates{background:var(--pv-soft);border-color:var
 <!-- VIEW 4 · PURVIEW — MIGRATION WIZARD (3 TABS)       -->
 <!-- ══════════════════════════════════════════════════ -->
 <div class="view" id="v4">
-  <div class="banner bn-pv" style="margin-bottom:14px;">
-    <span class="b-ico">🟢</span>
+  <div class="banner bn-mda" style="margin-bottom:14px;">
+    <span class="b-ico">🛡️</span>
     <div class="b-body">
-      <div class="b-title">You are now in Microsoft Purview Compliance Portal — Migration Wizard</div>
-      Context from MDA has been loaded: 4 eligible policies detected (3 Can Migrate, 1 Partial). The tool will create Purview policies based on each policy's app scope and governance actions. Review each tab and click <strong>Create All Policies</strong> when ready.
+      <div class="b-title">Detailed policy review — still in MDA</div>
+      Context loaded from assessment: 4 eligible policies (3 Can Migrate, 1 Partial). Review each tab and click <strong>Create policies</strong> within each tab. Purview policies are created on your behalf — you remain in MDA throughout.
     </div>
   </div>
 
@@ -1044,7 +1145,7 @@ html[data-theme="dark"] .tool-creates{background:var(--pv-soft);border-color:var
 
   <div class="page-hdr">
     <div class="page-title">DLP Policies</div>
-    <div class="page-sub">Microsoft Purview Compliance Portal · Data Loss Prevention · Policies</div>
+    <div class="page-sub">Policies created by MDA Migration Tool · Visible in Microsoft Purview Compliance Portal › Data Loss Prevention</div>
   </div>
 
   <div class="tbl">
@@ -1134,11 +1235,8 @@ function runGates(){
       setTimeout(()=>{
         passGate('gc3','gi3','gd3','Compliance Admin role confirmed (admin@contoso.com)');
         setTimeout(()=>{
-          passGate('gc4','gi4','gd4','Purview Enterprise account detected — Contoso Enterprise');
-          setTimeout(()=>{
-            passGate('gc5','gi5','gd5','Azure subscription linked — Contoso EA · Required for 3P PAYG billing');
-            setTimeout(()=>{ document.getElementById('gateResult').style.display='block'; }, 350);
-          }, 750);
+          passGate('gc4','gi4','gd4','Purview Enterprise account active · Azure subscription linked — Contoso EA (3P PAYG ready)');
+          setTimeout(()=>{ document.getElementById('gateResult').style.display='block'; }, 400);
         }, 750);
       }, 750);
     }, 800);
@@ -1150,10 +1248,87 @@ function passGate(card,ico,desc,msg){
   c.classList.add('pass'); d.textContent=msg;
 }
 
-function checkAcks(){ /* Acknowledgements are informational only — migration proceeds regardless */ }
+function checkAcks(){ /* kept for V4 compatibility */ }
 
 function launchPurview(){
-  go('4s');
+  go(4); // detailed tabbed view — reachable from V3's "Review in detail" link
+}
+
+// ── V3 Combined Assess+Select functions ──────────────────────────
+function getProgForMda(mdaName){
+  return PROG.filter(p => p.name === mdaName || p.name === mdaName + ' - 3P');
+}
+
+function toggleDetail(rowId, btnId){
+  const row = document.getElementById(rowId);
+  const btn = document.getElementById(btnId);
+  const isOpen = row.style.display !== 'none';
+  row.style.display = isOpen ? 'none' : 'table-row';
+  if(btn) btn.textContent = isOpen ? '▶ See what maps' : '▼ Hide detail';
+}
+
+function togglePrereqAcc(){
+  const body = document.getElementById('v3PqBody');
+  const tog  = document.getElementById('v3PqToggle');
+  const open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : 'block';
+  tog.textContent = open ? '▼ Show' : '▲ Hide';
+}
+
+function toggleAllV3(v){
+  document.querySelectorAll('.v3-cb').forEach(cb => cb.checked = v);
+  updateV3Btn();
+}
+
+function updateV3Btn(){
+  const checked = [...document.querySelectorAll('.v3-cb:checked')].map(cb => cb.dataset.mda);
+  const items   = checked.flatMap(name => getProgForMda(name));
+  const n       = items.length;
+  const has3p   = items.some(p => p.group === '3p');
+  const paygDiv = document.getElementById('v3PaygAck');
+  if(paygDiv) paygDiv.style.display = has3p ? 'block' : 'none';
+  const paygCb = document.getElementById('v3PaygCb');
+  const paygOk = !has3p || (paygCb && paygCb.checked);
+  const btn = document.getElementById('btnV3Create');
+  if(btn){
+    btn.textContent = n > 0 ? '🟢 Create ' + n + ' selected ' + (n === 1 ? 'policy' : 'policies') + ' in Purview' : 'No policies selected';
+    btn.disabled = n === 0 || !paygOk;
+  }
+  const cbs    = [...document.querySelectorAll('.v3-cb')];
+  const allCb  = document.getElementById('v3All');
+  if(allCb){
+    const checkedCbs = cbs.filter(cb => cb.checked);
+    allCb.indeterminate = checkedCbs.length > 0 && checkedCbs.length < cbs.length;
+    if(!allCb.indeterminate) allCb.checked = checkedCbs.length === cbs.length;
+  }
+}
+
+function startProgressV3(){
+  const checked = [...document.querySelectorAll('.v3-cb:checked')].map(cb => cb.dataset.mda);
+  const items   = checked.flatMap(name => getProgForMda(name));
+  if(items.length === 0){ alert('Please select at least one policy to create.'); return; }
+  renderV6(items);
+  go(5);
+  const list = document.getElementById('pList');
+  const fill = document.getElementById('pFill');
+  const lbl  = document.getElementById('pLbl');
+  document.getElementById('prog-hdr-sub').textContent = 'Creating ' + items.length + ' ' + (items.length === 1 ? 'policy' : 'policies') + ' in Purview — drafts only, no enforcement';
+  fill.style.width = '0%';
+  lbl.textContent  = '0 / ' + items.length + ' policies created';
+  list.innerHTML   = items.map((p,i) => `
+    <div class="prog-item" id="pi${i}">
+      <span class="prog-ico" id="pio${i}">⏳</span>
+      <span class="prog-name">${p.name}</span>
+      <span class="prog-mode">${p.type} · ${p.mode}</span>
+    </div>`).join('');
+  let done = 0;
+  function next(){
+    if(done >= items.length){ setTimeout(() => go(6), 600); return; }
+    const ico = document.getElementById('pio' + done);
+    if(ico) ico.innerHTML = '<span class="spin">⏳</span>';
+    setTimeout(() => { if(ico) ico.textContent = '✅'; done++; fill.style.width = (done / items.length * 100) + '%'; lbl.textContent = done + ' / ' + items.length + ' policies created'; next(); }, 470);
+  }
+  next();
 }
 
 function switchTab(n){
@@ -1254,12 +1429,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
 
 const FLYOUT_NAV = {
-  v2:  { surface:'mda',    tag:'🛡️ MDA',              title:'Licensing &amp; Permissions Check' },
-  v3:  { surface:'mda',    tag:'🛡️ MDA',              title:'Policy Readiness Assessment' },
-  v4:  { surface:'purview',tag:'🟢 Microsoft Purview', title:'Review &amp; Create Policies' },
-  v4s: { surface:'purview',tag:'🟢 Microsoft Purview', title:'Create Policies — All at Once' },
-  v5:  { surface:'purview',tag:'🟢 Microsoft Purview', title:'Creating Policies…' },
-  v6:  { surface:'purview',tag:'🟢 Microsoft Purview', title:'Migration Complete' },
+  v2:  { surface:'mda', tag:'🛡️ MDA', title:'Licensing &amp; Permissions Check' },
+  v3:  { surface:'mda', tag:'🛡️ MDA', title:'Assess &amp; Set Up Policies' },
+  v4:  { surface:'mda', tag:'🛡️ MDA', title:'Review &amp; Create Policies (Detail)' },
+  v4s: { surface:'mda', tag:'🛡️ MDA', title:'Create Policies — All at Once' },
+  v5:  { surface:'mda', tag:'🛡️ MDA', title:'Creating Policies in Purview…' },
+  v6:  { surface:'mda', tag:'🛡️ MDA', title:'Policies Created in Purview' },
 };
 
 function openFlyout(){
@@ -1278,9 +1453,9 @@ function closeFlyout(){
 
 function flyoutGo(n){
   const flyoutEl = document.getElementById('flyout');
-  // Expand to full-screen for Purview views (4+), normal width for MDA views
-  const isPurview = (typeof n === 'string' && n.startsWith('4')) || (typeof n === 'number' && n >= 4);
-  if(isPurview){ flyoutEl.classList.add('expanded'); }
+  // Expand to full-screen for v3+ (assessment+selection and beyond)
+  const shouldExpand = (typeof n === 'string' && (n.startsWith('3') || n.startsWith('4'))) || (typeof n === 'number' && n >= 3);
+  if(shouldExpand){ flyoutEl.classList.add('expanded'); }
   else { flyoutEl.classList.remove('expanded'); }
   const id = typeof n === 'string' ? 'v'+n : 'v'+n;
   // Hide all flyout views
