@@ -151,12 +151,12 @@
             <thead><tr><th></th><th>Policy</th><th>Status</th></tr></thead>
             <tbody>
               <tr>
-                <td><input type="checkbox" checked disabled style="accent-color:#0f6cbd"></td>
+                <td><input type="checkbox" id="chkFin" checked onclick="updateBtn()" style="accent-color:#0f6cbd;width:16px;height:16px;cursor:pointer"></td>
                 <td class="pol-name"><strong>Financial Records Detection</strong><div class="pol-note">SharePoint, OneDrive</div></td>
                 <td><span class="status-chip chip-full">✅ Full</span></td>
               </tr>
               <tr>
-                <td><input type="checkbox" checked disabled style="accent-color:#0f6cbd"></td>
+                <td><input type="checkbox" id="chkPii" checked onclick="updateBtn()" style="accent-color:#0f6cbd;width:16px;height:16px;cursor:pointer"></td>
                 <td class="pol-name"><strong>PII Monitoring</strong><div class="pol-note">SharePoint, OneDrive</div></td>
                 <td><span class="status-chip chip-full">✅ Full</span></td>
               </tr>
@@ -172,7 +172,7 @@
               </tr>
             </tbody>
           </table>
-          <div style="font-size:11px;color:#888;margin-bottom:14px">Fully supported policies are always included. Partial policies are your choice.</div>
+          <div style="font-size:11px;color:#888;margin-bottom:14px">All policies are pre-selected. Uncheck any you want to skip. Only "Cannot migrate" policies are excluded.</div>
           <div id="selCount" style="font-size:12px;color:#0f6cbd;font-weight:600;margin-bottom:8px">3 policies selected</div>
         </div>
 
@@ -280,15 +280,15 @@ function runGates(){
 }
 
 function updateBtn(){
-  const gdprIncluded = document.getElementById('chkGdpr').checked;
-  const count = gdprIncluded ? 3 : 2;
-  document.getElementById('btnCreate').textContent = 'Create ' + count + ' Polic' + (count===1?'y':'ies') + ' in Purview';
+  const count = ['chkFin','chkPii','chkGdpr'].filter(id=>document.getElementById(id).checked).length;
+  document.getElementById('btnCreate').disabled = count===0;
+  document.getElementById('btnCreate').textContent = count===0 ? 'Select at least one policy' : 'Create ' + count + ' Polic' + (count===1?'y':'ies') + ' in Purview';
   document.getElementById('selCount').textContent = count + ' polic' + (count===1?'y':'ies') + ' selected';
 }
 
 function startCreate(){
   const gdprIncluded = document.getElementById('chkGdpr').checked;
-  const count = gdprIncluded ? 3 : 2;
+  const count = ['chkFin','chkPii','chkGdpr'].filter(id=>document.getElementById(id).checked).length;
   document.getElementById('creatingMsg').innerHTML =
     'Creating <strong>' + count + ' polic' + (count===1?'y':'ies') + '</strong> in Purview DLP…<br><span style="color:#aaa;font-size:12px;">This takes a few seconds</span>';
   document.getElementById('stepGates').style.display='none';
