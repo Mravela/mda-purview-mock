@@ -481,187 +481,73 @@ html[data-theme="dark"] .prereq-acc-hdr .pq-warn-badge{background:#3b2008;border
       </div>
     </div>
     <div class="act-row" style="justify-content:center;">
-      <button class="btn btn-p btn-lg" onclick="go(3)">Continue → Assess Policies</button>
+      <span style="font-size:12px;color:var(--cp-text-m);">Advancing to policy assessment…</span>
+      <a href="#" style="font-size:12px;color:var(--cp-link);margin-left:8px;" onclick="go(3);return false;">Skip →</a>
     </div>
   </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════ -->
-<!-- VIEW 3 · MDA — ASSESS & SET UP (COMBINED)          -->
+<!-- VIEW 3 · MDA — ASSESS & CREATE (SIMPLIFIED)        -->
 <!-- ══════════════════════════════════════════════════ -->
 <div class="view" id="v3">
   <div class="page-hdr">
-    <div class="page-title">Assess &amp; Set Up Policies in Purview</div>
-    <div class="page-sub">Review how each MDA policy translates, select which to create, then launch — all without leaving MDA</div>
+    <div class="page-title">Set Up Policies in Purview</div>
+    <div class="page-sub">Policies are created as drafts — no enforcement until you enable them. Disable the corresponding MDA policy before enabling each Purview policy.</div>
   </div>
 
-  <div class="stat-row">
-    <div class="stat-card sc-can"><div class="sv">3</div><div class="sl">Can Migrate</div></div>
-    <div class="stat-card sc-part"><div class="sv">1</div><div class="sl">Partial</div></div>
-    <div class="stat-card sc-cant"><div class="sv">1</div><div class="sl">Cannot Migrate</div></div>
-    <div class="stat-card"><div class="sv">8</div><div class="sl">Purview Output Policies</div></div>
-  </div>
-
-  <div class="info-box">
-    💡 A single MDA policy may produce multiple Purview policies based on app scope and governance actions.
-    Policies with <strong>Apply/Remove Sensitivity Label</strong> actions produce Auto-labeling policies automatically.
-    Purview policies are created as <strong>drafts only</strong> — no enforcement until you enable them.
-  </div>
-
-  <!-- Prerequisites accordion -->
-  <div class="prereq-accordion">
-    <button class="prereq-acc-hdr" onclick="togglePrereqAcc()">
-      <span>📋 Prerequisites</span>
-      <span class="pq-warn-badge">⚠ 1 item needs attention</span>
-      <span class="prereq-acc-spacer"></span>
-      <span class="prereq-acc-toggle" id="v3PqToggle">▼ Show</span>
-    </button>
-    <div id="v3PqBody" style="display:none;">
-      <div class="prereq-panel" style="margin:0;border:none;border-radius:0;border-top:1px solid var(--cp-border);">
-        <div class="pq">
-          <span class="pq-ico">✅</span>
-          <div class="pq-lbl">3P app connectors active in MDA (Box, Dropbox, Google Workspace, Salesforce)<small>Required for 3P App DLP policy creation</small></div>
-          <div class="pq-right"><span class="pq-ok">✓ Verified</span><a class="docs-link" onclick="alert('Opens: learn.microsoft.com/defender-cloud-apps/enable-instant-visibility-protection-and-governance-actions-for-your-apps')">📄 Connector docs →</a></div>
-        </div>
-        <div class="pq">
-          <span class="pq-ico">✅</span>
-          <div class="pq-lbl">SPO / OneDrive workloads enabled in Purview DLP scope<small>Required for SharePoint and OneDrive DLP policies</small></div>
-          <div class="pq-right"><span class="pq-ok">✓ Verified</span></div>
-        </div>
-        <div class="pq">
-          <span class="pq-ico">⚠️</span>
-          <div class="pq-lbl">Sensitivity labels not yet published to SharePoint / OneDrive scope<small>Required for <strong>Financial Records Detection</strong> — Apply Sensitivity Label action. Policy will be created but the label won't apply until published.</small></div>
-          <div class="pq-right"><span class="pq-warn">⚠ Not detected</span><a class="docs-link" onclick="alert('Opens: learn.microsoft.com/purview/sensitivity-labels-sharepoint-onedrive-files')">📄 How to fix →</a></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Combined assessment + selection table -->
   <div class="tbl">
     <table>
       <thead><tr>
         <th style="width:32px;"><input type="checkbox" id="v3All" checked onchange="toggleAllV3(this.checked)"></th>
-        <th>MDA Policy</th><th>App Scope</th><th>Classification</th><th>Purview Output Policies</th><th>Gaps / Notes</th>
+        <th>MDA Policy</th>
+        <th style="width:160px;">Status</th>
+        <th>Purview Output</th>
       </tr></thead>
       <tbody>
-        <!-- Customer PII Protection — CAN MIGRATE -->
         <tr>
           <td><input type="checkbox" class="v3-cb" checked data-mda="Customer PII Protection" onchange="updateV3Btn()"></td>
-          <td><strong>Customer PII Protection</strong></td>
-          <td style="font-size:12px;">SPO · ODB · Box · Dropbox</td>
+          <td><strong>Customer PII Protection</strong><div style="font-size:11px;color:var(--cp-text-m);margin-top:2px;">SPO · ODB · Box · Dropbox</div></td>
           <td><span class="badge b-can">✅ Can Migrate</span></td>
-          <td><div style="display:flex;flex-direction:column;gap:4px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-3p">3P DLP</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div></div></td>
-          <td style="font-size:12px;color:var(--cp-ok);">All conditions fully supported</td>
+          <td><div class="pills"><span class="pill p-spo">SPO DLP</span><span class="pill p-3p">3P DLP</span></div></td>
         </tr>
-        <!-- Financial Records Detection — PARTIAL -->
         <tr>
           <td><input type="checkbox" class="v3-cb" checked data-mda="Financial Records Detection" onchange="updateV3Btn()"></td>
-          <td>
-            <strong>Financial Records Detection</strong>
-            <button class="expand-btn" id="expBtn1" onclick="toggleDetail('det1','expBtn1')">▶ See what maps</button>
-          </td>
-          <td style="font-size:12px;">SPO · ODB · GWS</td>
+          <td><strong>Financial Records Detection</strong><div style="font-size:11px;color:var(--cp-text-m);margin-top:2px;">SPO · ODB · GWS</div></td>
           <td><span class="badge b-part">⚠️ Partial</span></td>
-          <td><div style="display:flex;flex-direction:column;gap:4px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-warn);">⚠️ Partial</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-al">Auto-label</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div></div></td>
-          <td><ul class="gap-list"><li><span class="rc" title="ContentIsNotLabeled not supported for SPO/ODB in Purview DLP.">GAP-001</span> Unlabeled file detection — no Purview equivalent</li></ul></td>
+          <td><div class="pills"><span class="pill p-spo">SPO DLP</span><span class="pill p-al">Auto-label</span></div></td>
         </tr>
-        <tr id="det1" class="detail-row" style="display:none;">
-          <td colspan="6">
-            <div class="detail-box">
-              <div class="detail-title">Financial Records Detection — Condition mapping</div>
-              <div class="detail-grid">
-                <div class="detail-col detail-ok">
-                  <div class="detail-col-hdr">✅ Will be created (2 Purview policies)</div>
-                  <div class="detail-item">📘 <strong>SPO/ODB DLP</strong> — SSN &amp; Credit Card detection → Block access + Notify admin (Simulation mode)</div>
-                  <div class="detail-item">🟢 <strong>Auto-labeling policy</strong> — Apply "Confidential - Finance" label to matching files (Simulation mode)</div>
-                </div>
-                <div class="detail-col detail-warn">
-                  <div class="detail-col-hdr">❌ Will be dropped (1 condition)</div>
-                  <div class="detail-item"><strong>Unlabeled file detection (ContentIsNotLabeled) — GAP-001</strong><br>No equivalent condition exists in Purview SPO/ODB DLP. Gap will be documented in the Purview policy description for manual follow-up.</div>
-                </div>
-              </div>
-              <label class="detail-ack">
-                <input type="checkbox" id="ack1" checked onchange="updateV3Btn()">
-                I understand GAP-001 (unlabeled file detection) will not be migrated. I'll review coverage after creation.
-              </label>
-            </div>
-          </td>
-        </tr>
-        <!-- IP Leak Prevention — CAN MIGRATE -->
         <tr>
           <td><input type="checkbox" class="v3-cb" checked data-mda="IP Leak Prevention" onchange="updateV3Btn()"></td>
-          <td><strong>IP Leak Prevention</strong></td>
-          <td style="font-size:12px;">ODB · Dropbox · Salesforce</td>
+          <td><strong>IP Leak Prevention</strong><div style="font-size:11px;color:var(--cp-text-m);margin-top:2px;">ODB · Dropbox · Salesforce</div></td>
           <td><span class="badge b-can">✅ Can Migrate</span></td>
-          <td><div style="display:flex;flex-direction:column;gap:4px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-3p">3P DLP</span><span style="font-size:11px;color:var(--cp-ok);">✅</span></div></div></td>
-          <td style="font-size:12px;color:var(--cp-ok);">All conditions fully supported</td>
+          <td><div class="pills"><span class="pill p-spo">SPO DLP</span><span class="pill p-3p">3P DLP</span></div></td>
         </tr>
-        <!-- GDPR Compliance Scan — PARTIAL -->
         <tr>
           <td><input type="checkbox" class="v3-cb" checked data-mda="GDPR Compliance Scan" onchange="updateV3Btn()"></td>
-          <td>
-            <strong>GDPR Compliance Scan</strong>
-            <button class="expand-btn" id="expBtn2" onclick="toggleDetail('det2','expBtn2')">▶ See what maps</button>
-          </td>
-          <td style="font-size:12px;">SPO · Box · GWS</td>
+          <td><strong>GDPR Compliance Scan</strong><div style="font-size:11px;color:var(--cp-text-m);margin-top:2px;">SPO · Box · GWS</div></td>
           <td><span class="badge b-part">⚠️ Partial</span></td>
-          <td><div style="display:flex;flex-direction:column;gap:4px;"><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-spo">SPO DLP</span><span style="font-size:11px;color:var(--cp-warn);">⚠️ Partial</span></div><div style="display:flex;align-items:center;gap:4px;"><span class="pill p-3p">3P DLP</span><span style="font-size:11px;color:var(--cp-warn);">⚠️ Partial</span></div></div></td>
-          <td>
-            <ul class="gap-list">
-              <li><span class="rc" title="MIME type maps to extension list — some MIME types may not have an exact extension match">GAP-002</span> MIME type → extension mapping (info loss)</li>
-              <li><span class="rc" title="Sharing level 'Private' has no equivalent in Purview — this value is skipped">GAP-003</span> Sharing level "Private" — no Purview equivalent</li>
-            </ul>
-          </td>
+          <td><div class="pills"><span class="pill p-spo">SPO DLP</span><span class="pill p-3p">3P DLP</span></div></td>
         </tr>
-        <tr id="det2" class="detail-row" style="display:none;">
-          <td colspan="6">
-            <div class="detail-box">
-              <div class="detail-title">GDPR Compliance Scan — Condition mapping</div>
-              <div class="detail-grid">
-                <div class="detail-col detail-ok">
-                  <div class="detail-col-hdr">✅ Will be created (2 Purview policies)</div>
-                  <div class="detail-item">📘 <strong>SPO/ODB DLP</strong> — PII/GDPR content detection → Trash file + Notify user (Simulation mode)</div>
-                  <div class="detail-item">🟣 <strong>3P App DLP</strong> — Box + Google Workspace → Trash file, Legacy approach (Disabled mode)</div>
-                </div>
-                <div class="detail-col detail-warn">
-                  <div class="detail-col-hdr">❌ Will be dropped / converted (2 conditions)</div>
-                  <div class="detail-item"><strong>MIME type filter — GAP-002</strong><br>Converted to file extension list. Some MIME types may not have an exact extension match; review after creation.</div>
-                  <div class="detail-item"><strong>Sharing level "Private" — GAP-003</strong><br>No Purview equivalent — excluded. Gaps will be documented in the policy description field.</div>
-                </div>
-              </div>
-              <label class="detail-ack">
-                <input type="checkbox" id="ack2" checked onchange="updateV3Btn()">
-                I understand GAP-002 and GAP-003 will not be fully migrated. I'll review and add missing conditions after creation.
-              </label>
-            </div>
-          </td>
-        </tr>
-        <!-- Legacy Audit Policy — CANNOT MIGRATE -->
-        <tr style="opacity:0.5;">
+        <tr style="opacity:0.45;">
           <td><input type="checkbox" disabled></td>
-          <td><strong>Legacy Audit Policy</strong></td>
-          <td style="font-size:12px;">SPO · ODB</td>
+          <td><strong>Legacy Audit Policy</strong><div style="font-size:11px;color:var(--cp-text-m);margin-top:2px;">SPO · ODB</div></td>
           <td><span class="badge b-cant">❌ Cannot Migrate</span></td>
-          <td>—</td>
-          <td><ul class="gap-list"><li><span class="rc" title="Custom regex expressions have no equivalent condition in Purview DLP">GAP-010</span> Custom regex — no Purview equivalent</li></ul></td>
+          <td><span style="font-size:12px;color:var(--cp-text-m);">No Purview equivalent</span></td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- PAYG ack — shown only when 3P policies are selected -->
-  <div id="v3PaygAck" style="padding:8px 0 2px;">
-    <label class="detail-ack" style="border-color:#f5c84a;background:#fef9ee;">
-      <input type="checkbox" id="v3PaygCb" checked onchange="updateV3Btn()" style="accent-color:var(--cp-warn);">
-      <span>I acknowledge the 12-month free period for 3P DLP and that the PAYG protected-asset meter applies thereafter. &nbsp;<a class="docs-link" style="display:inline;" onclick="alert('learn.microsoft.com/purview/dlp-microsoft-defender-integration')">Billing details →</a></span>
-    </label>
+  <div style="font-size:12px;color:var(--cp-text-m);margin-bottom:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+    <span>⚠️ Partial policies are created with supported conditions only.</span>
+    <a class="docs-link" onclick="alert('Opens: learn.microsoft.com/purview/mda-to-purview-migration#partial-policies')">📄 What gets migrated →</a>
+    <span style="margin-left:auto;">3P policies use PAYG billing. &nbsp;<a class="docs-link" style="display:inline;" onclick="alert('Opens: learn.microsoft.com/purview/dlp-microsoft-defender-integration')">Billing details →</a></span>
   </div>
 
   <div class="act-row">
     <button class="btn btn-pv btn-lg" id="btnV3Create" onclick="startProgressV3()">🟢 Create 8 selected policies in Purview</button>
-    <span class="act-note">Drafts only · No enforcement until you enable · Full rollback on failure</span>
-    <a href="#" style="color:var(--cp-link);font-size:13px;margin-left:auto;" onclick="go(4);return false;">Review by policy type in detail →</a>
+    <span class="act-note">Drafts only · No enforcement until you enable</span>
   </div>
 </div>
 
@@ -1075,28 +961,26 @@ html[data-theme="dark"] .prereq-acc-hdr .pq-warn-badge{background:#3b2008;border
 </div>
 
 <!-- ══════════════════════════════════════════════════ -->
-<!-- VIEW 6 · PURVIEW — MIGRATION COMPLETE              -->
+<!-- VIEW 6 · MDA — POLICIES CREATED (SUMMARY)          -->
 <!-- ══════════════════════════════════════════════════ -->
 <div class="view" id="v6">
-  <!-- Success header -->
   <div class="mig-complete-hdr">
     <div class="mig-complete-icon">&#x2705;</div>
     <div>
       <div class="mig-complete-title" id="v6Title">8 policies created in Purview</div>
-      <div class="mig-complete-sub" id="v6Sub">All policies are in draft mode &mdash; no enforcement is active yet</div>
+      <div class="mig-complete-sub" id="v6Sub">All in draft mode — no enforcement until you enable each one</div>
     </div>
   </div>
 
-  <!-- Two-column: Created | Not Migrated -->
   <div class="mig-cols">
     <div class="mig-col">
       <div class="mig-col-hdr mig-col-hdr-ok" id="v6CreatedHdr">&#x2705; Created (8)</div>
       <div id="v6Created">
-        <div class="mig-col-item"><strong>Financial Records Detection</strong><div class="mig-pills"><span class="mpill mpill-al">Auto-labeling &middot; Simulation</span></div></div>
-        <div class="mig-col-item"><strong>Customer PII Protection</strong><div class="mig-pills"><span class="mpill mpill-spo">SPO DLP &middot; Simulation</span><span class="mpill mpill-3p">3P DLP &middot; Disabled</span></div></div>
-        <div class="mig-col-item"><strong>Financial Records Detection</strong><div class="mig-pills"><span class="mpill mpill-spo">SPO DLP &middot; Simulation</span><span class="mpill-gap">&#9888; Partial &middot; GAP-001</span></div></div>
-        <div class="mig-col-item"><strong>IP Leak Prevention</strong><div class="mig-pills"><span class="mpill mpill-spo">SPO DLP &middot; Simulation</span><span class="mpill mpill-3p">3P DLP &middot; Disabled</span></div></div>
-        <div class="mig-col-item"><strong>GDPR Compliance Scan</strong><div class="mig-pills"><span class="mpill mpill-spo">SPO DLP &middot; Simulation</span><span class="mpill mpill-3p">3P DLP &middot; Disabled</span><span class="mpill-gap">&#9888; Partial &middot; GAP-002, 003</span></div></div>
+        <div class="mig-col-item"><strong>Financial Records Detection</strong><div class="mig-pills"><span class="mpill mpill-al">Auto-labeling · Simulation</span></div></div>
+        <div class="mig-col-item"><strong>Customer PII Protection</strong><div class="mig-pills"><span class="mpill mpill-spo">SPO DLP · Simulation</span><span class="mpill mpill-3p">3P DLP · Disabled</span></div></div>
+        <div class="mig-col-item"><strong>Financial Records Detection</strong><div class="mig-pills"><span class="mpill mpill-spo">SPO DLP · Simulation</span><span class="mpill-gap">⚠ Partial</span></div></div>
+        <div class="mig-col-item"><strong>IP Leak Prevention</strong><div class="mig-pills"><span class="mpill mpill-spo">SPO DLP · Simulation</span><span class="mpill mpill-3p">3P DLP · Disabled</span></div></div>
+        <div class="mig-col-item"><strong>GDPR Compliance Scan</strong><div class="mig-pills"><span class="mpill mpill-spo">SPO DLP · Simulation</span><span class="mpill mpill-3p">3P DLP · Disabled</span><span class="mpill-gap">⚠ Partial</span></div></div>
       </div>
     </div>
     <div class="mig-col mig-col-right">
@@ -1104,32 +988,27 @@ html[data-theme="dark"] .prereq-acc-hdr .pq-warn-badge{background:#3b2008;border
       <div id="v6NotMigrated">
         <div class="mig-col-item">
           <strong>Legacy Audit Policy</strong>
-          <div style="font-size:12px;color:var(--cp-text-muted);margin-top:3px;">Custom regex condition &mdash; no Purview equivalent. Review manually.</div>
+          <div style="font-size:12px;color:var(--cp-text-muted);margin-top:3px;">No Purview equivalent — stays active in MDA. <a class="docs-link" style="display:inline;" onclick="alert('Opens: learn.microsoft.com/purview/dlp-policy-reference')">Re-create manually →</a></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- What's next -->
   <div class="ns-simple">
-    <div class="ns-simple-title">What's next</div>
+    <div class="ns-simple-title">Next steps</div>
     <div class="ns-simple-row">
       <span class="ns-num">1</span>
-      <div><strong>Review Simulation reports</strong><span>SPO/ODB and Auto-labeling policies are scanning but not enforcing. Check match reports in Purview before enabling enforcement.</span></div>
+      <div><strong>Review your new policies in Purview</strong><span>SPO/ODB and Auto-labeling policies are in Simulation — they scan but don't enforce yet.</span></div>
     </div>
     <div class="ns-simple-row">
       <span class="ns-num">2</span>
-      <div><strong>Disable MDA policy &rarr; enable Purview policy</strong><span>Do this one at a time. Never run both simultaneously &mdash; causes duplicate enforcement and conflicting governance actions.</span></div>
-    </div>
-    <div class="ns-simple-row">
-      <span class="ns-num">3</span>
-      <div><strong>Fix gaps in partial policies</strong><span>Financial Records Detection and GDPR Compliance Scan have documented gaps (GAP-001, GAP-002, GAP-003). Add missing conditions manually in Purview after enabling.</span></div>
+      <div><strong>Disable MDA policy → then enable Purview policy</strong><span>Do this one at a time to avoid duplicate enforcement.</span></div>
     </div>
   </div>
 
   <div class="act-row" style="margin-top:20px;">
-    <button class="btn btn-pv btn-lg" onclick="go(7)">View Policies in Purview DLP &rarr;</button>
-    <button class="btn btn-s" onclick="returnToMda()">&larr; Return to MDA Policies</button>
+    <button class="btn btn-pv btn-lg" onclick="go(7)">View Policies in Purview &rarr;</button>
+    <button class="btn btn-s" onclick="returnToMda()">&larr; Back to MDA</button>
   </div>
 </div>
 
@@ -1236,7 +1115,10 @@ function runGates(){
         passGate('gc3','gi3','gd3','Compliance Admin role confirmed (admin@contoso.com)');
         setTimeout(()=>{
           passGate('gc4','gi4','gd4','Purview Enterprise account active · Azure subscription linked — Contoso EA (3P PAYG ready)');
-          setTimeout(()=>{ document.getElementById('gateResult').style.display='block'; }, 400);
+          setTimeout(()=>{
+            document.getElementById('gateResult').style.display='block';
+            setTimeout(()=> go(3), 1800); // auto-advance to assessment
+          }, 400);
         }, 750);
       }, 750);
     }, 800);
