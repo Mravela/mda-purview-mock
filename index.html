@@ -254,7 +254,7 @@ html[data-theme="dark"] .tool-creates{background:var(--pv-soft);border-color:var
 .flyout.open{pointer-events:all;}
 .flyout-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.4);opacity:0;transition:opacity 0.28s ease;}
 .flyout.open .flyout-backdrop{opacity:1;}
-.flyout-panel{position:relative;width:780px;max-width:92vw;background:var(--cp-bg);display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(0,0,0,0.18);transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);}
+.flyout-panel{position:relative;width:860px;max-width:96vw;background:var(--cp-bg);display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(0,0,0,0.18);transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);}
 .flyout.open .flyout-panel{transform:translateX(0);}
 .flyout.expanded .flyout-panel{width:100%;max-width:100%;}
 .flyout-header{padding:14px 20px;border-bottom:1px solid var(--cp-border);display:flex;align-items:center;justify-content:space-between;background:var(--cp-surface);flex-shrink:0;min-height:54px;}
@@ -1359,10 +1359,8 @@ function closeFlyout(){
 
 function flyoutGo(n){
   const flyoutEl = document.getElementById('flyout');
-  // Expand to full-screen for v3+ (assessment+selection and beyond)
-  const shouldExpand = (typeof n === 'string' && (n.startsWith('3') || n.startsWith('4'))) || (typeof n === 'number' && n >= 3);
-  if(shouldExpand){ flyoutEl.classList.add('expanded'); }
-  else { flyoutEl.classList.remove('expanded'); }
+  // Always keep flyout as a side panel — never expand to full-page
+  flyoutEl.classList.remove('expanded');
   const id = typeof n === 'string' ? 'v'+n : 'v'+n;
   // Hide all flyout views
   document.querySelectorAll('.flyout-content .view').forEach(v=>v.classList.remove('active'));
