@@ -352,28 +352,55 @@ html[data-theme="dark"] .prereq-acc-hdr .pq-warn-badge{background:#3b2008;border
 .prereq-acc-spacer{flex:1;}
 .prereq-acc-toggle{font-size:11px;color:var(--cp-link);font-weight:600;flex-shrink:0;}
 
-/* ── Wizard Step Bar ── */
-.wiz-bar{
-  display:flex;align-items:center;padding:14px 24px 12px;
-  background:var(--cp-surface);border-bottom:1px solid var(--cp-border);
-  flex-shrink:0;gap:0;
+/* ── Flyout two-panel layout ── */
+.flyout-body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── Vertical Wizard Sidebar ── */
+.wiz-sidebar-v{
+  width:210px;flex-shrink:0;border-right:1px solid var(--cp-border);
+  padding:22px 16px 20px;overflow-y:auto;background:var(--cp-surface);
 }
-.wiz-step{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;position:relative;z-index:1;}
-.wiz-connector{flex:1;height:2px;background:var(--cp-border);margin:0;transition:background 0.3s;align-self:flex-start;margin-top:15px;}
-.wiz-connector.done{background:var(--cp-ok);}
-.wiz-circle{
-  width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:700;transition:all 0.3s;border:2px solid var(--cp-border);
-  background:var(--cp-surface);color:var(--cp-text-m);flex-shrink:0;
+.wsv-step-row{display:flex;align-items:flex-start;gap:10px;}
+.wsv-step-left{display:flex;flex-direction:column;align-items:center;width:28px;flex-shrink:0;}
+.wsv-circle{
+  width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;flex-shrink:0;border:2px solid var(--cp-border);
+  background:var(--cp-surface);color:var(--cp-text-m);transition:all .2s;
 }
-.wiz-step.done .wiz-circle{background:var(--cp-ok);border-color:var(--cp-ok);color:#fff;}
-.wiz-step.active .wiz-circle{background:var(--cp-link);border-color:var(--cp-link);color:#fff;box-shadow:0 0 0 3px rgba(0,120,212,0.18);}
-.wiz-step.complete .wiz-circle{background:var(--cp-ok);border-color:var(--cp-ok);color:#fff;}
-.wiz-label{font-size:11px;font-weight:600;color:var(--cp-text-m);text-align:center;white-space:nowrap;transition:color 0.3s;}
-.wiz-step.active .wiz-label{color:var(--cp-link);font-weight:700;}
-.wiz-step.done .wiz-label{color:var(--cp-ok);}
-.wiz-step.complete .wiz-label{color:var(--cp-ok);}
-html[data-theme="dark"] .wiz-step.active .wiz-circle{box-shadow:0 0 0 3px rgba(77,166,255,0.22);}</style>
+.wsv-circle.active{background:var(--cp-link);border-color:var(--cp-link);color:#fff;box-shadow:0 0 0 3px rgba(0,120,212,0.18);}
+.wsv-circle.done{background:var(--cp-link);border-color:var(--cp-link);color:#fff;}
+.wsv-circle.locked{background:var(--cp-surface-soft);border-color:var(--cp-border);color:var(--cp-text-m);}
+.wsv-vline{width:2px;min-height:26px;flex:1;margin:3px 0;background:var(--cp-border);transition:background .3s;}
+.wsv-vline.done{background:var(--cp-link);}
+.wsv-step-info{padding-top:4px;padding-bottom:22px;flex:1;min-width:0;}
+.wsv-label{font-size:13px;font-weight:600;color:var(--cp-text-m);line-height:1.3;transition:color .2s;}
+.wsv-label.active{color:var(--cp-link);font-weight:700;}
+.wsv-label.done{color:var(--cp-link);}
+.wsv-desc{font-size:11px;color:var(--cp-text-m);margin-top:3px;line-height:1.4;opacity:0;}
+.wsv-desc.active{opacity:1;color:var(--cp-text-s);}
+html[data-theme="dark"] .wsv-circle.active{box-shadow:0 0 0 3px rgba(77,166,255,0.22);}
+
+/* ── Flyout Footer ── */
+.flyout-footer{
+  padding:12px 20px;border-top:1px solid var(--cp-border);
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+  background:var(--cp-surface);
+}
+.flyout-footer .ff-spacer{flex:1;}
+.ff-btn{
+  display:inline-flex;align-items:center;gap:6px;padding:8px 18px;
+  border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;
+  border:1px solid var(--cp-border);background:var(--cp-surface);
+  color:var(--cp-text);font-family:inherit;transition:all .15s;
+}
+.ff-btn:hover:not(:disabled){background:var(--cp-surface-soft);}
+.ff-btn:disabled{opacity:.4;cursor:not-allowed;}
+.ff-btn-primary{background:var(--cp-link);color:#fff;border-color:var(--cp-link);}
+.ff-btn-primary:hover:not(:disabled){background:#006cbf;border-color:#006cbf;}
+html[data-theme="dark"] .ff-btn-primary{background:var(--cp-link);color:#fff;}
+
+/* ── Wiz-bar kept hidden (legacy) ── */
+.wiz-bar{display:none;}</style>
 </head>
 <body>
 <div class="shell">
@@ -476,7 +503,9 @@ html[data-theme="dark"] .wiz-step.active .wiz-circle{box-shadow:0 0 0 3px rgba(7
         <div class="wiz-circle" id="wc4">4</div>
         <div class="wiz-label">Complete</div>
       </div>
-    </div><div class="flyout-body">
+    </div><div class="flyout-body-wrap">
+      <div class="wiz-sidebar-v"><div id="wizSidebar"></div></div>
+      <div class="flyout-body">
       <div class="flyout-content">
 <!-- ══════════════════════════════════════════════════ -->
 <!-- VIEW 2 · MDA — LICENSING & PERMISSIONS GATE        -->
@@ -1100,12 +1129,19 @@ html[data-theme="dark"] .wiz-step.active .wiz-circle{box-shadow:0 0 0 3px rgba(7
 </div>
 
 
-      </div>
-    </div>
-  </div>
-</div>
+      </div><!-- end flyout-content -->
+    </div><!-- end flyout-body -->
+  </div><!-- end flyout-body-wrap -->
 
-<script>
+  <!-- ── Flyout Footer: Back · Next · [spacer] · Cancel ── -->
+  <div class="flyout-footer" id="flyoutFooter">
+    <button class="ff-btn" id="flyoutBtnBack" onclick="flyoutNavBack()" disabled>Back</button>
+    <button class="ff-btn ff-btn-primary" id="flyoutBtnNext" onclick="flyoutNavNext()">Next</button>
+    <div class="ff-spacer"></div>
+    <button class="ff-btn" id="flyoutBtnCancel" onclick="closeFlyout()">Cancel</button>
+  </div>
+
+</div><!-- end flyout-panel -->
 const PROG = [
   {name:'Customer PII Protection',      type:'SPO/ODB DLP',    mode:'Simulation', group:'spo'},
   {name:'Customer PII Protection - 3P', type:'3P DLP (Legacy)',mode:'Disabled',   group:'3p'},
@@ -1141,6 +1177,7 @@ function runGates(){
           passGate('gc4','gi4','gd4','Purview Enterprise account active · Azure subscription linked — Contoso EA (3P PAYG ready)');
           setTimeout(()=>{
             document.getElementById('gateResult').style.display='block';
+            unlockFlyoutNext(); // enable footer Next button
             setTimeout(()=> go(3), 1800); // auto-advance to assessment
           }, 400);
         }, 750);
@@ -1343,6 +1380,103 @@ const FLYOUT_NAV = {
   v6:  { surface:'mda', tag:'🛡️ MDA', title:'Policies Created in Purview' },
 };
 
+// ── Vertical wizard step definitions ─────────────────────────────────────────
+const WIZ_STEPS = [
+  { label: 'Check Requirements', desc: 'Verify licensing & permissions for migration.' },
+  { label: 'Review Policies',    desc: 'Select which MDA policies to migrate to Purview DLP.' },
+  { label: 'Create Policies',    desc: 'Creating selected policies in Purview as drafts.' },
+  { label: 'Complete',           desc: 'Review results and next steps.' },
+];
+// Map view ids to wizard step index (1-based)
+const WIZ_VIEW_STEP = { v2:1, v3:2, v4:2, 'v4s':2, v5:3, v6:4 };
+let _currentWizStep = 1;
+
+function renderWizSidebar(activeStep) {
+  _currentWizStep = activeStep;
+  let html = '';
+  WIZ_STEPS.forEach((s, i) => {
+    const num    = i + 1;
+    const done   = num < activeStep;
+    const active = num === activeStep;
+    const locked = num > activeStep;
+    const circleClass = active ? 'active' : done ? 'done' : 'locked';
+    const labelClass  = active ? 'active' : done ? 'done' : '';
+    const inner = done   ? '✓'
+                : locked ? '<span style="font-size:10px;opacity:.6">🔒</span>'
+                         : num;
+    html += `
+      <div class="wsv-step-row">
+        <div class="wsv-step-left">
+          <div class="wsv-circle ${circleClass}">${inner}</div>
+          ${num < WIZ_STEPS.length ? `<div class="wsv-vline ${done?'done':''}"></div>` : ''}
+        </div>
+        <div class="wsv-step-info">
+          <div class="wsv-label ${labelClass}">${s.label}</div>
+          <div class="wsv-desc ${active?'active':''}">${s.desc}</div>
+        </div>
+      </div>`;
+  });
+  const sb = document.getElementById('wizSidebar');
+  if (sb) sb.innerHTML = html;
+}
+
+function updateFooterForStep(stepId) {
+  const btnBack   = document.getElementById('flyoutBtnBack');
+  const btnNext   = document.getElementById('flyoutBtnNext');
+  const btnCancel = document.getElementById('flyoutBtnCancel');
+  if (!btnBack) return;
+
+  // Reset visibility
+  btnBack.style.display   = '';
+  btnNext.style.display   = '';
+  btnCancel.style.display = '';
+  btnBack.disabled   = false;
+  btnNext.disabled   = false;
+
+  if (stepId === 'v2') {
+    btnBack.disabled = true;     // first step
+    btnNext.disabled = true;     // unlocked by gate checks
+    btnNext.textContent = 'Next';
+  } else if (stepId === 'v3' || stepId === 'v4' || stepId === 'v4s') {
+    btnNext.textContent = 'Next';
+  } else if (stepId === 'v5') {
+    // creating in progress
+    btnBack.disabled   = true;
+    btnNext.disabled   = true;
+    btnNext.textContent = 'Next';
+    btnCancel.disabled = true;
+  } else if (stepId === 'v6') {
+    btnBack.style.display   = 'none';
+    btnNext.style.display   = 'none';
+    btnCancel.textContent   = 'Done';
+  }
+}
+
+// Called by gate checks completion to unlock "Next"
+function unlockFlyoutNext() {
+  const btn = document.getElementById('flyoutBtnNext');
+  if (btn) btn.disabled = false;
+}
+
+// Footer Back
+function flyoutNavBack() {
+  const active = document.querySelector('.flyout-content .view.active');
+  if (!active) return;
+  const id = active.id;
+  if (id === 'v3' || id === 'v4' || id === 'v4s') flyoutGo(2);
+  else if (id === 'v2') { /* already first step */ }
+}
+
+// Footer Next
+function flyoutNavNext() {
+  const active = document.querySelector('.flyout-content .view.active');
+  if (!active) return;
+  const id = active.id;
+  if (id === 'v2') flyoutGo(3);
+  else if (id === 'v3') startProgressV3();   // existing create-policies flow
+  else if (id === 'v4' || id === 'v4s') startProgressV3();
+}
+
 function openFlyout(){
   document.getElementById('flyout').classList.add('open');
   flyoutGo(2);
@@ -1355,13 +1489,15 @@ function closeFlyout(){
   document.querySelectorAll('.content .view').forEach(v=>v.classList.remove('active'));
   const v1 = document.getElementById('v1');
   if(v1) v1.classList.add('active');
+  // Reset cancel button label
+  const btnCancel = document.getElementById('flyoutBtnCancel');
+  if (btnCancel) { btnCancel.textContent = 'Cancel'; btnCancel.disabled = false; }
 }
 
 function flyoutGo(n){
   const flyoutEl = document.getElementById('flyout');
-  // Always keep flyout as a side panel — never expand to full-page
   flyoutEl.classList.remove('expanded');
-  const id = typeof n === 'string' ? 'v'+n : 'v'+n;
+  const id = typeof n === 'string' ? (n.startsWith('v') ? n : 'v'+n) : 'v'+n;
   // Hide all flyout views
   document.querySelectorAll('.flyout-content .view').forEach(v=>v.classList.remove('active'));
   const target = document.getElementById(id);
@@ -1374,7 +1510,6 @@ function flyoutGo(n){
     tag.textContent = cfg.tag.replace(/&amp;/g,'&');
     tag.className = 'flyout-surface-tag' + (cfg.surface==='purview'?' purview':'');
     ttl.innerHTML = cfg.title;
-    // Also update main surface bar
     const sb=document.getElementById('surfaceBar');
     if(sb){
       if(cfg.surface==='purview'){
@@ -1387,11 +1522,10 @@ function flyoutGo(n){
     }
   }
   document.querySelector('.flyout-body').scrollTo({top:0,behavior:'smooth'});
-  // Wizard step mapping
-  const wizStepMap = {v2:1, v3:2, v4:2, 'v4s':2, v5:3, v6:4};
-  const wizStep = wizStepMap[id];
-  if(wizStep) updateWizardStep(wizStep);
-
+  // Update vertical sidebar + footer
+  const wizStep = WIZ_VIEW_STEP[id] || 1;
+  renderWizSidebar(wizStep);
+  updateFooterForStep(id);
 }
 
 function renderV6(created){
@@ -1426,25 +1560,7 @@ function renderV6(created){
 }
 
 function updateWizardStep(step){
-  const steps = [1,2,3,4];
-  steps.forEach(i => {
-    const el = document.getElementById('ws'+i);
-    const circle = document.getElementById('wc'+i);
-    if(!el) return;
-    el.className = 'wiz-step';
-    if(i < step){
-      el.classList.add('done');
-      circle.textContent = '✓';
-    } else if(i === step){
-      el.classList.add(step === 4 ? 'complete' : 'active');
-      circle.textContent = step === 4 ? '✓' : i;
-    } else {
-      circle.textContent = i;
-    }
-    // connector
-    const conn = document.getElementById('wconn'+i);
-    if(conn) conn.className = 'wiz-connector' + (i < step ? ' done' : '');
-  });
+  // Legacy horizontal bar update — now replaced by vertical sidebar; kept as no-op
 }
 function go(n){
   if(n===1){
