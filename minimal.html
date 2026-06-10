@@ -37,38 +37,97 @@
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center}
   .overlay.show{display:flex}
 
-  .modal{background:#fff;border-radius:8px;width:460px;max-width:95vw;box-shadow:0 8px 32px rgba(0,0,0,.18);overflow:hidden}
-  .modal-head{padding:18px 20px 14px;border-bottom:1px solid #e8e8e8;display:flex;align-items:center;justify-content:space-between}
-  .modal-head h2{font-size:15px;font-weight:600}
-  .modal-head button{background:none;border:none;font-size:20px;cursor:pointer;color:#666;line-height:1}
-  .modal-body{padding:20px}
+  /* ── Wizard Modal ── */
+  .modal{
+    background:#fff;border-radius:8px;width:860px;max-width:96vw;max-height:90vh;
+    box-shadow:0 8px 32px rgba(0,0,0,.22);overflow:hidden;
+    display:flex;flex-direction:column;
+  }
 
-  /* Gate checks */
-  .gate-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
-  .gate{display:flex;align-items:center;gap:10px;font-size:13px;color:#444}
-  .gate-icon{width:20px;text-align:center;font-size:16px;flex-shrink:0}
-  .gate-label{flex:1}
+  /* Modal header */
+  .modal-head{
+    padding:16px 20px;border-bottom:1px solid #e8e8e8;
+    display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+  }
+  .modal-head h2{font-size:16px;font-weight:700}
+  .modal-head-close{
+    background:none;border:none;font-size:20px;cursor:pointer;color:#666;
+    line-height:1;width:30px;height:30px;display:flex;align-items:center;
+    justify-content:center;border-radius:4px;
+  }
+  .modal-head-close:hover{background:#f0f0f0;color:#333}
+
+  /* Two-panel body */
+  .modal-body{display:flex;flex:1;overflow:hidden;min-height:420px}
+
+  /* Left: Step sidebar */
+  .wiz-sidebar{
+    width:210px;flex-shrink:0;border-right:1px solid #e8e8e8;
+    padding:24px 16px 20px;overflow-y:auto;background:#fafafa;
+  }
+  .wiz-steps{display:flex;flex-direction:column}
+
+  /* Step row */
+  .wiz-step-row{display:flex;align-items:flex-start;gap:10px}
+  .wiz-step-left{display:flex;flex-direction:column;align-items:center;width:28px;flex-shrink:0}
+  .wiz-circle{
+    width:28px;height:28px;border-radius:50%;display:flex;align-items:center;
+    justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;
+    border:2px solid #c8c8c8;background:#fff;color:#888;transition:all .2s;
+  }
+  .wiz-circle.active{background:#0f6cbd;border-color:#0f6cbd;color:#fff;box-shadow:0 0 0 3px rgba(15,108,189,.18)}
+  .wiz-circle.done{background:#0f6cbd;border-color:#0f6cbd;color:#fff}
+  .wiz-circle.locked{background:#f5f5f5;border-color:#d0d0d0;color:#bbb}
+  .wiz-vline{width:2px;min-height:28px;flex:1;margin:3px 0;background:#e0e0e0;transition:background .3s}
+  .wiz-vline.done{background:#0f6cbd}
+  .wiz-step-info{padding-top:4px;padding-bottom:24px;flex:1;min-width:0}
+  .wiz-step-label{font-size:13px;font-weight:600;color:#888;line-height:1.3;transition:color .2s}
+  .wiz-step-label.active{color:#0f6cbd;font-weight:700}
+  .wiz-step-label.done{color:#0f6cbd}
+  .wiz-step-desc{font-size:11px;color:#bbb;margin-top:3px;line-height:1.4}
+  .wiz-step-desc.active{color:#666}
+
+  /* Right: Content panel */
+  .wiz-content{flex:1;padding:24px 28px;overflow-y:auto}
+  .step-title{font-size:15px;font-weight:700;margin-bottom:4px}
+  .step-desc{font-size:13px;color:#666;margin-bottom:18px;line-height:1.5}
+
+  /* Footer */
+  .modal-footer{
+    padding:14px 20px;border-top:1px solid #e8e8e8;
+    display:flex;align-items:center;gap:10px;flex-shrink:0;background:#fff;
+  }
+  .footer-spacer{flex:1}
+
+  /* Buttons */
+  .btn{padding:8px 20px;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .15s}
+  .btn-primary{background:#0f6cbd;color:#fff}
+  .btn-primary:hover:not(:disabled){background:#0d5ba3}
+  .btn-primary:disabled{opacity:.4;cursor:not-allowed}
+  .btn-secondary{background:#fff;color:#333;border:1px solid #ccc}
+  .btn-secondary:hover:not(:disabled){background:#f5f5f5}
+  .btn-secondary:disabled{opacity:.4;cursor:not-allowed}
+  .btn-purview{background:#038387;color:#fff}
+  .btn-purview:hover{background:#026b6e}
+
+  /* Spinner */
   .spin{display:inline-block;width:16px;height:16px;border:2px solid #ccc;border-top-color:#0f6cbd;border-radius:50%;animation:spin .7s linear infinite}
+  .big-spin{width:36px;height:36px;border:3px solid #ddd;border-top-color:#0f6cbd;border-radius:50%;animation:spin .8s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  /* Status message */
-  .status-msg{display:none;padding:10px 14px;border-radius:6px;font-size:13px;margin-bottom:16px}
+  /* Gate checks */
+  .gate-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+  .gate{display:flex;align-items:center;gap:10px;font-size:13px;color:#444}
+  .gate-icon{width:22px;text-align:center;font-size:15px;flex-shrink:0}
+  .gate-label{flex:1}
+
+  /* Status messages */
+  .status-msg{display:none;padding:10px 14px;border-radius:6px;font-size:13px;margin-bottom:14px}
   .status-msg.error{background:#fce8e8;color:#a80000;border:1px solid #f5c2c2}
-  .status-msg.info{background:#f0f6ff;color:#003966;border:1px solid #b3d1f5}
+  .status-msg.success{background:#f0fdf4;color:#166534;border:1px solid #86efac}
 
-  /* Creating state */
-  .creating{display:none;flex-direction:column;align-items:center;gap:12px;padding:16px 0 20px;text-align:center}
-  .creating .big-spin{width:36px;height:36px;border:3px solid #ddd;border-top-color:#0f6cbd;border-radius:50%;animation:spin .8s linear infinite}
-  .creating p{font-size:13px;color:#555}
-
-  /* Success state */
-  .success{display:none;flex-direction:column;align-items:center;gap:10px;padding:10px 0 6px;text-align:center}
-  .success .checkmark{font-size:40px}
-  .success h3{font-size:15px;font-weight:600;color:#1e6e32}
-  .success p{font-size:13px;color:#555;max-width:320px}
-
-  /* Policy selection table */
-  .pol-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+  /* Policy table */
+  .pol-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px}
   .pol-table th{font-weight:600;color:#555;padding:6px 8px;border-bottom:2px solid #e8e8e8;text-align:left}
   .pol-table td{padding:8px 8px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
   .pol-table tr.disabled td{color:#aaa}
@@ -79,15 +138,24 @@
   .chip-none{background:#f0f0f0;color:#999}
   .pol-note{font-size:11px;color:#999;margin-top:2px}
   .pol-note a{color:#0f6cbd}
-  .btn-row{display:flex;gap:10px;justify-content:flex-end;margin-top:4px}
-  .btn{padding:8px 20px;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer;border:none}
-  .btn-primary{background:#0f6cbd;color:#fff}
-  .btn-primary:hover:not(:disabled){background:#0d5ba3}
-  .btn-primary:disabled{opacity:.45;cursor:not-allowed}
-  .btn-secondary{background:#fff;color:#333;border:1px solid #ccc}
-  .btn-secondary:hover{background:#f5f5f5}
-  .btn-purview{background:#038387;color:#fff}
-  .btn-purview:hover{background:#026b6e}
+  .sel-count{font-size:12px;color:#0f6cbd;font-weight:600;margin-bottom:10px}
+
+  /* Summary section */
+  .summ-section{margin-bottom:18px}
+  .summ-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#999;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #f0f0f0}
+  .summ-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f8f8f8;font-size:13px}
+  .summ-row:last-child{border-bottom:none}
+  .summ-note{font-size:11px;color:#999;margin-top:2px}
+  .summ-confirm{font-size:13px;color:#555;margin-top:16px;padding:12px 14px;background:#f0f6ff;border:1px solid #b3d1f5;border-radius:6px;line-height:1.5}
+
+  /* Creating state */
+  .creating-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;padding:50px 0;text-align:center}
+  .creating-wrap p{font-size:13px;color:#555}
+
+  /* Success */
+  .success-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .success-header h3{font-size:15px;font-weight:700;color:#1e6e32}
+  .success-header p{font-size:12px;color:#555;margin-top:2px}
 </style>
 </head>
 <body>
@@ -126,243 +194,422 @@
   </table>
 </div>
 
-<!-- ── Modal ── -->
+<!-- ── Wizard Modal ── -->
 <div class="overlay" id="overlay">
   <div class="modal">
+
+    <!-- Header -->
     <div class="modal-head">
       <h2>Migrate to Microsoft Purview DLP</h2>
-      <button onclick="closeModal()">×</button>
+      <button class="modal-head-close" onclick="closeModal()" title="Close">×</button>
     </div>
-    <div class="modal-body" id="modalBody">
 
-      <!-- Step 1: Gate checks -->
-      <div id="stepGates">
-        <div class="gate-list" id="gateList">
-          <div class="gate" id="gc1"><div class="gate-icon"><div class="spin"></div></div><div class="gate-label">Checking Purview license…</div></div>
-          <div class="gate" id="gc2"><div class="gate-icon">—</div><div class="gate-label" style="color:#aaa">Required roles (MDA + Purview)</div></div>
-          <div class="gate" id="gc3"><div class="gate-icon">—</div><div class="gate-label" style="color:#aaa">Enterprise account &amp; Azure subscription (PAYG)</div></div>
-        </div>
-        <div class="status-msg" id="gateError"></div>
+    <!-- Two-panel body -->
+    <div class="modal-body">
 
-        <!-- Policy selection — shown after gates pass -->
-        <div id="migSummary" style="display:none">
-          <div style="font-size:12px;color:#555;margin-bottom:8px">Select which policies to migrate:</div>
-          <table class="pol-table">
-            <thead><tr><th></th><th>MDA Policy</th><th>Purview output</th><th>Status</th></tr></thead>
-            <tbody>
-              <tr>
-                <td><input type="checkbox" id="chkFin" checked onclick="updateBtn()" style="accent-color:#0f6cbd;width:16px;height:16px;cursor:pointer"></td>
-                <td class="pol-name"><strong>Financial Records Detection</strong><div class="pol-note">SharePoint, OneDrive</div></td>
-                <td style="font-size:12px;color:#555">SPO DLP</td>
-                <td><span class="status-chip chip-full">✅ Full</span></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" id="chkPii" checked onclick="updateBtn()" style="accent-color:#0f6cbd;width:16px;height:16px;cursor:pointer"></td>
-                <td class="pol-name"><strong>PII Monitoring</strong><div class="pol-note">SharePoint, OneDrive</div></td>
-                <td style="font-size:12px;color:#555">SPO DLP</td>
-                <td><span class="status-chip chip-full">✅ Full</span></td>
-              </tr>
-              <tr class="partial">
-                <td><input type="checkbox" id="chkGdpr" checked onclick="updateBtn()" style="accent-color:#0f6cbd;width:16px;height:16px;cursor:pointer"></td>
-                <td class="pol-name"><strong>GDPR Compliance Scan</strong><div class="pol-note">SharePoint, Box</div></td>
-                <td style="font-size:12px;color:#555">
-                  SPO DLP <span class="status-chip chip-full" style="font-size:10px;padding:1px 5px">Full</span><br>
-                  <span style="color:#7a5800">3P DLP <span class="status-chip chip-partial" style="font-size:10px;padding:1px 5px">Partial</span></span>
-                  <div class="pol-note"><a href="#" onclick="alert('Opens docs')" style="color:#0f6cbd">Supported conditions &amp; actions in Purview →</a></div>
-                </td>
-                <td><span class="status-chip chip-partial">⚠️ Mixed</span></td>
-              </tr>
-              <tr class="disabled">
-                <td><input type="checkbox" disabled></td>
-                <td class="pol-name">Legacy Audit Policy<div class="pol-note">All apps</div></td>
-                <td style="font-size:12px;color:#aaa">—<div class="pol-note"><a href="#" onclick="alert('Opens docs')" style="color:#0f6cbd">Supported conditions &amp; actions in Purview →</a></div></td>
-                <td><span class="status-chip chip-none">❌ Cannot migrate</span></td>
-              </tr>
-            </tbody>
-          </table>
-          <div style="font-size:11px;color:#888;margin-bottom:14px">All policies are pre-selected. Uncheck any you want to skip. Only "Cannot migrate" policies are excluded.</div>
-          <div id="selCount" style="font-size:12px;color:#0f6cbd;font-weight:600;margin-bottom:8px">3 policies selected</div>
-        </div>
-
-        <div class="btn-row">
-          <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-          <button class="btn btn-primary" id="btnCreate" disabled onclick="startCreate()">Create Policies in Purview</button>
-        </div>
+      <!-- Left: vertical step sidebar -->
+      <div class="wiz-sidebar">
+        <div class="wiz-steps" id="wizSteps"></div>
       </div>
 
-      <!-- Step 2: Creating -->
-      <div class="creating" id="stepCreating">
-        <div class="big-spin"></div>
-        <p id="creatingMsg">Creating <strong>3 policies</strong> in Purview DLP…<br><span style="color:#aaa;font-size:12px;">This takes a few seconds</span></p>
-      </div>
-
-      <!-- Step 3: Success -->
-      <div id="stepSuccess" style="display:none;padding:4px 0">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-          <span style="font-size:28px">✅</span>
-          <div>
-            <h3 id="successTitle" style="font-size:15px;font-weight:600;color:#1e6e32">Policies created in Purview</h3>
-            <div style="font-size:12px;color:#555;margin-top:2px">Drafts only — no enforcement until you enable them in Purview.</div>
-          </div>
-        </div>
-
-        <div id="successCreated" style="margin-bottom:12px">
-          <!-- populated by JS -->
-        </div>
-
-        <div id="successSkippedWrap" style="border-top:1px solid #f0f0f0;padding-top:12px;margin-bottom:16px">
-          <div style="font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Not migrated</div>
-          <div id="successSkipped"><!-- populated by JS --></div>
-        </div>
-
-        <div class="btn-row" style="justify-content:flex-end">
-          <button class="btn btn-secondary" onclick="closeModal()">Done</button>
-          <button class="btn btn-purview" onclick="alert('Opens Purview DLP portal')">Review &amp; Enable in Purview →</button>
-        </div>
-      </div>
+      <!-- Right: step content -->
+      <div class="wiz-content" id="wizContent"></div>
 
     </div>
+
+    <!-- Footer: Back · Next · [spacer] · Cancel -->
+    <div class="modal-footer">
+      <button class="btn btn-secondary" id="btnBack" onclick="goBack()">Back</button>
+      <button class="btn btn-primary"   id="btnNext" onclick="goNext()">Next</button>
+      <div class="footer-spacer"></div>
+      <button class="btn btn-secondary" id="btnCancel" onclick="closeModal()">Cancel</button>
+    </div>
+
   </div>
 </div>
 
 <script>
-const GATES = [
-  {id:'gc1', label:'Purview license', pass:true,  delay:900},
-  {id:'gc2', label:'Required roles (MDA + Purview)', pass:true,  delay:1400},
-  {id:'gc3', label:'Enterprise account & Azure subscription (PAYG)', pass:true, delay:1900},
+// ─── Wizard state ────────────────────────────────────────────────────────────
+let currentStep   = 0;
+let gatesOk       = false;
+let selectedPols  = { fin: true, pii: true, gdpr: true };
+let wizComplete   = false;
+
+const STEPS = [
+  {
+    label : 'Check Requirements',
+    desc  : 'Verify your tenant meets the prerequisites to run the migration wizard.'
+  },
+  {
+    label : 'Review Policies',
+    desc  : 'Select the MDA file policies you want to migrate to Microsoft Purview DLP.'
+  },
+  {
+    label : 'Summary',
+    desc  : 'Review your selections and confirm to create the policies in Purview as drafts.'
+  }
 ];
 
-function openModal(){
-  document.getElementById('overlay').classList.add('show');
-  document.getElementById('stepGates').style.display='block';
-  document.getElementById('stepCreating').style.display='none';
-  document.getElementById('stepSuccess').style.display='none';
-  document.getElementById('btnCreate').disabled=true;
-  document.getElementById('gateError').style.display='none';
-  document.getElementById('migSummary').style.display='none';
-  resetGates();
-  runGates();
-}
+const GATES = [
+  { id:'gc1', label:'Purview license',                                    pass:true, delay:900  },
+  { id:'gc2', label:'Required roles (MDA + Purview)',                     pass:true, delay:1400 },
+  { id:'gc3', label:'Enterprise account & Azure subscription (PAYG)',     pass:true, delay:1900 },
+];
 
-function closeModal(){
-  document.getElementById('overlay').classList.remove('show');
-}
+// ─── Render helpers ───────────────────────────────────────────────────────────
+function renderSidebar() {
+  let html = '';
+  STEPS.forEach((s, i) => {
+    const done   = i < currentStep;
+    const active = i === currentStep;
+    const locked = i > currentStep;
 
-function resetGates(){
-  GATES.forEach((g,i)=>{
-    const el=document.getElementById(g.id);
-    el.querySelector('.gate-icon').innerHTML = i===0?'<div class="spin"></div>':'—';
-    el.querySelector('.gate-label').style.color = i===0?'#444':'#aaa';
-    el.querySelector('.gate-label').textContent = g.label+(i===0?'…':'');
+    const circleClass = active ? 'active' : done ? 'done' : 'locked';
+    const labelClass  = active ? 'active' : done ? 'done' : '';
+
+    // circle content: checkmark for done, lock emoji for locked, number for active/pending
+    const inner = done   ? '✓'
+                : locked ? '<span style="font-size:11px">🔒</span>'
+                         : (i + 1);
+
+    html += `
+      <div class="wiz-step-row">
+        <div class="wiz-step-left">
+          <div class="wiz-circle ${circleClass}">${inner}</div>
+          ${ i < STEPS.length - 1
+              ? `<div class="wiz-vline ${done ? 'done' : ''}"></div>`
+              : '' }
+        </div>
+        <div class="wiz-step-info">
+          <div class="wiz-step-label ${labelClass}">${s.label}</div>
+          <div class="wiz-step-desc ${active ? 'active' : ''}">${active ? s.desc : ''}</div>
+        </div>
+      </div>`;
   });
+  document.getElementById('wizSteps').innerHTML = html;
 }
 
-function runGates(){
-  GATES.forEach((g,i)=>{
-    setTimeout(()=>{
-      const el=document.getElementById(g.id);
-      const iconEl=el.querySelector('.gate-icon');
-      const lblEl=el.querySelector('.gate-label');
-      if(g.pass){
-        iconEl.innerHTML='✅';
-        lblEl.textContent=g.label;
-        lblEl.style.color='#333';
+function renderContent() {
+  const s   = STEPS[currentStep];
+  const hdr = `<div class="step-title">${s.label}</div>
+               <div class="step-desc">${s.desc}</div>`;
+
+  let body = '';
+  if (currentStep === 0) body = buildStep1();
+  if (currentStep === 1) body = buildStep2();
+  if (currentStep === 2) body = buildStep3();
+
+  document.getElementById('wizContent').innerHTML = hdr + body;
+
+  // kick off gate checks on step 1
+  if (currentStep === 0) {
+    if (!gatesOk) runGates();
+    else          showGateSuccess();
+  }
+  // restore checkbox listeners on step 2
+  if (currentStep === 1) {
+    ['chkFin','chkPii','chkGdpr'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('change', onPolChange);
+    });
+    updateSelCount();
+  }
+}
+
+function updateFooter() {
+  const btnBack   = document.getElementById('btnBack');
+  const btnNext   = document.getElementById('btnNext');
+  const btnCancel = document.getElementById('btnCancel');
+
+  btnBack.disabled = currentStep === 0 || wizComplete;
+
+  if (wizComplete) {
+    btnNext.style.display   = 'none';
+    btnCancel.style.display = 'none';
+    return;
+  }
+  btnNext.style.display   = '';
+  btnCancel.style.display = '';
+
+  if (currentStep === STEPS.length - 1) {
+    btnNext.textContent = 'Create Policies';
+    btnNext.disabled    = !Object.values(selectedPols).some(Boolean);
+  } else {
+    btnNext.textContent = 'Next';
+    btnNext.disabled    = currentStep === 0 ? !gatesOk
+                        : !Object.values(selectedPols).some(Boolean);
+  }
+}
+
+function render() {
+  renderSidebar();
+  renderContent();
+  updateFooter();
+}
+
+// ─── Step 1 — Requirements ────────────────────────────────────────────────────
+function buildStep1() {
+  return `
+    <div class="gate-list" id="gateList">
+      <div class="gate" id="gc1">
+        <div class="gate-icon"><div class="spin"></div></div>
+        <div class="gate-label">Checking Purview license…</div>
+      </div>
+      <div class="gate" id="gc2">
+        <div class="gate-icon" style="color:#ccc">—</div>
+        <div class="gate-label" style="color:#aaa">Required roles (MDA + Purview)</div>
+      </div>
+      <div class="gate" id="gc3">
+        <div class="gate-icon" style="color:#ccc">—</div>
+        <div class="gate-label" style="color:#aaa">Enterprise account &amp; Azure subscription (PAYG)</div>
+      </div>
+    </div>
+    <div class="status-msg" id="gateMsg"></div>`;
+}
+
+function runGates() {
+  GATES.forEach((g, i) => {
+    setTimeout(() => {
+      const el    = document.getElementById(g.id);
+      if (!el) return;
+      const icon  = el.querySelector('.gate-icon');
+      const label = el.querySelector('.gate-label');
+
+      if (g.pass) {
+        icon.innerHTML    = '✅';
+        label.textContent = g.label;
+        label.style.color = '#333';
       } else {
-        iconEl.innerHTML='❌';
-        lblEl.textContent=g.label;
-        lblEl.style.color='#a80000';
-        const err=document.getElementById('gateError');
-        err.className='status-msg error';
-        err.style.display='block';
-        err.innerHTML='<strong>Setup required:</strong> Set up a Purview Enterprise Account and link your Azure PAYG subscription before migrating. <a href="#" onclick="alert(\'Opens docs\')" style="color:#a80000">How to set up →</a>';
+        icon.innerHTML    = '❌';
+        label.textContent = g.label;
+        label.style.color = '#a80000';
+        showMsg('gateMsg', 'error',
+          '<strong>Setup required:</strong> Configure a Purview Enterprise Account and link an Azure PAYG subscription. ' +
+          '<a href="#" onclick="alert(\'Opens docs\')" style="color:#a80000">How to set up →</a>');
       }
-      // Activate next gate spinner
-      if(i < GATES.length-1){
-        const nxt=document.getElementById(GATES[i+1].id);
-        nxt.querySelector('.gate-icon').innerHTML='<div class="spin"></div>';
-        nxt.querySelector('.gate-label').textContent=GATES[i+1].label+'…';
-        nxt.querySelector('.gate-label').style.color='#444';
+
+      // activate next spinner
+      if (i < GATES.length - 1) {
+        const nxt = document.getElementById(GATES[i + 1].id);
+        if (nxt) {
+          nxt.querySelector('.gate-icon').innerHTML    = '<div class="spin"></div>';
+          nxt.querySelector('.gate-label').textContent = GATES[i + 1].label + '…';
+          nxt.querySelector('.gate-label').style.color = '#444';
+        }
       }
-      // All done — enable button + show summary
-      if(i===GATES.length-1 && GATES.every(x=>x.pass)){
-        document.getElementById('btnCreate').disabled=false;
-        document.getElementById('migSummary').style.display='block';
-        updateBtn();
+
+      // all passed
+      if (i === GATES.length - 1 && GATES.every(x => x.pass)) {
+        gatesOk = true;
+        showGateSuccess();
+        updateFooter();
       }
     }, g.delay);
   });
 }
 
-function updateBtn(){
-  const count = ['chkFin','chkPii','chkGdpr'].filter(id=>document.getElementById(id).checked).length;
-  document.getElementById('btnCreate').disabled = count===0;
-  document.getElementById('btnCreate').textContent = count===0 ? 'Select at least one policy' : 'Create ' + count + ' Polic' + (count===1?'y':'ies') + ' in Purview';
-  document.getElementById('selCount').textContent = count + ' polic' + (count===1?'y':'ies') + ' selected';
+function showGateSuccess() {
+  showMsg('gateMsg', 'success',
+    '✅ <strong>All checks passed.</strong> Your tenant is ready. Click <strong>Next</strong> to continue.');
 }
 
-function startCreate(){
-  const sel = {
-    fin: document.getElementById('chkFin').checked,
-    pii: document.getElementById('chkPii').checked,
-    gdpr: document.getElementById('chkGdpr').checked,
-  };
-  // Count Purview output policies (GDPR = 2 sub-policies)
-  const purviewCount = (sel.fin?1:0) + (sel.pii?1:0) + (sel.gdpr?2:0);
-  const mdaCount = Object.values(sel).filter(Boolean).length;
+// ─── Step 2 — Review Policies ─────────────────────────────────────────────────
+function buildStep2() {
+  const chk = id => selectedPols[id] ? 'checked' : '';
+  return `
+    <table class="pol-table">
+      <thead><tr><th></th><th>MDA Policy</th><th>Purview Output</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><input type="checkbox" id="chkFin" ${chk('fin')} style="accent-color:#0f6cbd;width:16px;height:16px;cursor:pointer"></td>
+          <td class="pol-name"><strong>Financial Records Detection</strong><div class="pol-note">SharePoint, OneDrive</div></td>
+          <td style="font-size:12px;color:#555">SPO DLP</td>
+          <td><span class="status-chip chip-full">✅ Full</span></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" id="chkPii" ${chk('pii')} style="accent-color:#0f6cbd;width:16px;height:16px;cursor:pointer"></td>
+          <td class="pol-name"><strong>PII Monitoring</strong><div class="pol-note">SharePoint, OneDrive</div></td>
+          <td style="font-size:12px;color:#555">SPO DLP</td>
+          <td><span class="status-chip chip-full">✅ Full</span></td>
+        </tr>
+        <tr class="partial">
+          <td><input type="checkbox" id="chkGdpr" ${chk('gdpr')} style="accent-color:#0f6cbd;width:16px;height:16px;cursor:pointer"></td>
+          <td class="pol-name"><strong>GDPR Compliance Scan</strong><div class="pol-note">SharePoint, Box</div></td>
+          <td style="font-size:12px;color:#555">
+            SPO DLP <span class="status-chip chip-full" style="font-size:10px;padding:1px 5px">Full</span><br>
+            <span style="color:#7a5800">3P DLP <span class="status-chip chip-partial" style="font-size:10px;padding:1px 5px">Partial</span></span>
+            <div class="pol-note"><a href="#" onclick="alert('Opens docs')" style="color:#0f6cbd">Supported conditions &amp; actions →</a></div>
+          </td>
+          <td><span class="status-chip chip-partial">⚠️ Mixed</span></td>
+        </tr>
+        <tr class="disabled">
+          <td><input type="checkbox" disabled></td>
+          <td class="pol-name" style="color:#aaa">Legacy Audit Policy<div class="pol-note">All apps</div></td>
+          <td style="font-size:12px;color:#aaa">—</td>
+          <td><span class="status-chip chip-none">❌ Cannot migrate</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sel-count" id="selCount"></div>
+    <div style="font-size:11px;color:#888">All eligible policies are pre-selected. Uncheck any you want to skip.</div>`;
+}
 
-  document.getElementById('creatingMsg').innerHTML =
-    'Creating <strong>' + purviewCount + ' Purview polic' + (purviewCount===1?'y':'ies') + '</strong> from ' + mdaCount + ' MDA polic' + (mdaCount===1?'y':'ies') + '…<br><span style="color:#aaa;font-size:12px;">This takes a few seconds</span>';
-  document.getElementById('stepGates').style.display='none';
-  document.getElementById('stepCreating').style.display='flex';
+function onPolChange() {
+  selectedPols.fin  = document.getElementById('chkFin')?.checked  ?? false;
+  selectedPols.pii  = document.getElementById('chkPii')?.checked  ?? false;
+  selectedPols.gdpr = document.getElementById('chkGdpr')?.checked ?? false;
+  updateSelCount();
+  updateFooter();
+}
 
-  setTimeout(()=>{
-    document.getElementById('stepCreating').style.display='none';
+function updateSelCount() {
+  const n  = Object.values(selectedPols).filter(Boolean).length;
+  const el = document.getElementById('selCount');
+  if (el) el.textContent = n + ' polic' + (n === 1 ? 'y' : 'ies') + ' selected';
+}
 
-    // Build created list
-    const rows = [];
-    if(sel.fin) rows.push({name:'Financial Records Detection · SPO', status:'full'});
-    if(sel.pii) rows.push({name:'PII Monitoring · SPO', status:'full'});
-    if(sel.gdpr){
-      rows.push({name:'GDPR Compliance Scan · SPO', status:'full'});
-      rows.push({name:'GDPR Compliance Scan · 3P', status:'partial', reason:'Box condition unsupported'});
-    }
+// ─── Step 3 — Summary ─────────────────────────────────────────────────────────
+function buildStep3() {
+  const rows = [];
+  if (selectedPols.fin)  rows.push({ name:'Financial Records Detection', output:'SPO DLP',  status:'full' });
+  if (selectedPols.pii)  rows.push({ name:'PII Monitoring',              output:'SPO DLP',  status:'full' });
+  if (selectedPols.gdpr) {
+    rows.push({ name:'GDPR Compliance Scan', output:'SPO DLP', status:'full' });
+    rows.push({ name:'GDPR Compliance Scan', output:'3P DLP',  status:'partial', note:'Box condition partially supported' });
+  }
 
-    document.getElementById('successTitle').textContent = purviewCount + ' Purview polic' + (purviewCount===1?'y':'ies') + ' created';
+  const createdHtml = rows.length
+    ? rows.map(r => `
+        <div class="summ-row">
+          <span style="color:${r.status==='full'?'#1e6e32':'#c47d00'}">${r.status==='full'?'✅':'⚠️'}</span>
+          <div style="flex:1">
+            <div>${r.name} <span style="color:#aaa;font-size:11px">→</span> <strong style="color:#0f6cbd">${r.output}</strong></div>
+            ${r.note ? `<div class="summ-note">${r.note}</div>` : ''}
+          </div>
+          <span style="font-size:11px;font-weight:600;color:${r.status==='full'?'#1e6e32':'#c47d00'}">${r.status==='full'?'Full':'Partial'}</span>
+        </div>`).join('')
+    : '<div style="color:#aaa;font-size:13px">No policies selected.</div>';
 
-    const createdSection = '<div style="font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Created as drafts</div>'
-      + rows.map(r => {
-        if(r.status==='full'){
-          return '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f5f5f5;font-size:13px">'
-            +'<span style="color:#1e6e32">✅</span>'
-            +'<span style="flex:1">'+r.name+'</span>'
-            +'<span style="font-size:11px;color:#1e6e32;font-weight:600">Full</span>'
-            +'</div>';
-        } else {
-          return '<div style="display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid #f5f5f5;font-size:13px">'
-            +'<span style="color:#c47d00">⚠️</span>'
-            +'<span style="flex:1"><span style="color:#7a5800">'+r.name+'</span>'
-            +'<div style="font-size:11px;color:#999;margin-top:2px"><a href="#" onclick="alert(\'Opens docs\')" style="color:#0f6cbd">Supported conditions &amp; actions in Purview →</a></div></span>'
-            +'<span style="font-size:11px;color:#7a5800;font-weight:600">Partial</span>'
-            +'</div>';
-        }
-      }).join('');
-    document.getElementById('successCreated').innerHTML = createdSection;
+  // skipped eligible policies
+  const skippedNames = [];
+  if (!selectedPols.fin)  skippedNames.push('Financial Records Detection');
+  if (!selectedPols.pii)  skippedNames.push('PII Monitoring');
+  if (!selectedPols.gdpr) skippedNames.push('GDPR Compliance Scan');
+  const skippedHtml = skippedNames.map(n =>
+    `<div class="summ-row"><span style="color:#aaa">—</span><div style="flex:1;color:#888">${n} (skipped)</div></div>`
+  ).join('');
 
-    // Always-skipped
-    const skippedHtml = '<div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:4px 0">'
-      +'<span>❌</span>'
-      +'<span style="flex:1"><span style="color:#555">Legacy Audit Policy</span>'
-      +'<div style="font-size:11px;color:#999;margin-top:2px"><a href="#" onclick="alert(\'Opens docs\')" style="color:#0f6cbd">Supported conditions &amp; actions in Purview →</a></div></span>'
-      +'</div>';
-    document.getElementById('successSkipped').innerHTML = skippedHtml;
+  return `
+    <div class="summ-section">
+      <div class="summ-section-title">Policies to create in Purview (${rows.length})</div>
+      ${createdHtml}
+    </div>
+    ${skippedNames.length ? `<div class="summ-section">${skippedHtml}</div>` : ''}
+    <div class="summ-section">
+      <div class="summ-section-title">Not migrated</div>
+      <div class="summ-row">
+        <span>❌</span>
+        <div style="flex:1;color:#888">Legacy Audit Policy <span style="font-size:11px">(no Purview equivalent)</span></div>
+      </div>
+    </div>
+    <div class="summ-confirm">
+      All policies will be created as <strong>drafts only</strong> — no enforcement until you enable them in Purview.
+      Confirm the details and click <strong>Create Policies</strong> to finish.
+    </div>`;
+}
 
-    document.getElementById('stepSuccess').style.display='block';
+// ─── Navigation ───────────────────────────────────────────────────────────────
+function goBack() {
+  if (currentStep > 0 && !wizComplete) { currentStep--; render(); }
+}
+
+function goNext() {
+  if (currentStep < STEPS.length - 1) { currentStep++; render(); return; }
+  // Last step — trigger creation
+  startCreate();
+}
+
+// ─── Create policies ──────────────────────────────────────────────────────────
+function startCreate() {
+  const rows = [];
+  if (selectedPols.fin)  rows.push({ name:'Financial Records Detection · SPO', status:'full' });
+  if (selectedPols.pii)  rows.push({ name:'PII Monitoring · SPO',              status:'full' });
+  if (selectedPols.gdpr) {
+    rows.push({ name:'GDPR Compliance Scan · SPO', status:'full' });
+    rows.push({ name:'GDPR Compliance Scan · 3P',  status:'partial', note:'Box condition unsupported' });
+  }
+
+  // Disable all footer buttons while creating
+  ['btnBack','btnNext','btnCancel'].forEach(id => document.getElementById(id).disabled = true);
+
+  document.getElementById('wizContent').innerHTML = `
+    <div class="creating-wrap">
+      <div class="big-spin"></div>
+      <p>Creating <strong>${rows.length} Purview polic${rows.length===1?'y':'ies'}</strong>…<br>
+      <span style="color:#aaa;font-size:12px">This takes a few seconds</span></p>
+    </div>`;
+
+  setTimeout(() => {
+    wizComplete = true;
+    // Mark all steps done in sidebar
+    currentStep = STEPS.length;
+    renderSidebar();
+    updateFooter();
+
+    const createdHtml = rows.map(r =>
+      r.status === 'full'
+        ? `<div class="summ-row"><span style="color:#1e6e32">✅</span><div style="flex:1">${r.name}</div><span style="font-size:11px;font-weight:600;color:#1e6e32">Created</span></div>`
+        : `<div class="summ-row"><span style="color:#c47d00">⚠️</span><div style="flex:1"><span style="color:#7a5800">${r.name}</span><div class="summ-note">${r.note}</div></div><span style="font-size:11px;font-weight:600;color:#c47d00">Partial</span></div>`
+    ).join('');
+
+    document.getElementById('wizContent').innerHTML = `
+      <div class="success-header">
+        <span style="font-size:32px">✅</span>
+        <div>
+          <h3>${rows.length} polic${rows.length===1?'y':'ies'} created in Purview</h3>
+          <p>Drafts only — no enforcement until you enable them in Purview.</p>
+        </div>
+      </div>
+      <div class="summ-section">
+        <div class="summ-section-title">Created as drafts</div>
+        ${createdHtml}
+      </div>
+      <div class="summ-section">
+        <div class="summ-section-title">Not migrated</div>
+        <div class="summ-row"><span>❌</span><div style="flex:1;color:#888">Legacy Audit Policy (no Purview equivalent)</div></div>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:10px;">
+        <button class="btn btn-purview" onclick="alert('Opens Purview DLP portal')">Review &amp; Enable in Purview →</button>
+        <button class="btn btn-secondary" onclick="closeModal()">Done</button>
+      </div>`;
   }, 2200);
 }
 
-// Close on backdrop click
-document.getElementById('overlay').addEventListener('click',function(e){
-  if(e.target===this) closeModal();
+// ─── Modal open / close ───────────────────────────────────────────────────────
+function openModal() {
+  currentStep  = 0;
+  gatesOk      = false;
+  wizComplete  = false;
+  selectedPols = { fin: true, pii: true, gdpr: true };
+  document.getElementById('overlay').classList.add('show');
+  render();
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('show');
+}
+
+// ─── Utility ──────────────────────────────────────────────────────────────────
+function showMsg(id, type, html) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.className     = 'status-msg ' + type;
+  el.style.display = 'block';
+  el.innerHTML     = html;
+}
+
+document.getElementById('overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('overlay')) closeModal();
 });
 </script>
 </body>
